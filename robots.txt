@@ -1,0 +1,30 @@
+# Buffalo Marathon 2025 - Robots.txt
+# Production Ready - 2025-08-08 14:16:14 UTC
+
+User-agent: *
+Allow: /
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /config/
+Disallow: /includes/
+Disallow: /database/
+Disallow: /logs/
+Disallow: /cache/
+Disallow: /uploads/temp/
+
+# Allow important pages
+Allow: /
+Allow: /categories.php
+Allow: /schedule.php
+Allow: /info.php
+Allow: /faq.php
+Allow: /contact.php
+Allow: /register.php
+Allow: /login.php
+
+# Sitemap location
+Sitemap: https://your-domain.com/sitemap.xml
+
+# Crawl-delay for courtesy
+Crawl-delay: 1

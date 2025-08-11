@@ -1,0 +1,27 @@
+{
+  "name": "Buffalo Marathon 2025",
+  "short_name": "Buffalo Marathon",
+  "description": "Buffalo Marathon 2025 - Zambia's Premier Running Event",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#4B5320",
+  "theme_color": "#4B5320",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["sports", "events", "lifestyle"],
+  "lang": "en",
+  "dir": "ltr"
+}
