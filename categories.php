@@ -7,23 +7,8 @@
 define('BUFFALO_SECURE_ACCESS', true);
 require_once 'includes/functions.php';
 
-// Get categories with registration counts
-$categories = [];
-try {
-    $db = getDB();
-    $stmt = $db->query("
-        SELECT c.*, 
-               COUNT(r.id) as registration_count
-        FROM categories c
-        LEFT JOIN registrations r ON c.id = r.category_id AND r.payment_status != 'cancelled'
-        WHERE c.is_active = 1
-        GROUP BY c.id
-        ORDER BY FIELD(c.name, 'Full Marathon', 'Half Marathon', 'Power Challenge', 'Family Fun Run', 'VIP Run', 'Kid Run')
-    ");
-    $categories = $stmt->fetchAll();
-} catch (Exception $e) {
-    error_log("Categories fetch error: " . $e->getMessage());
-}
+// Get categories with registration counts (using cache)
+$categories = cache_categories();
 
 $registration_open = isRegistrationOpen();
 $early_bird_active = isEarlyBirdActive();

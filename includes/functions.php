@@ -12,6 +12,12 @@ if (!defined('BUFFALO_CONFIG_LOADED')) {
     require_once __DIR__ . '/../config/database.php';
 }
 
+// Include new systems
+require_once __DIR__ . '/cache.php';
+require_once __DIR__ . '/logger.php';
+require_once __DIR__ . '/rate-limiter.php';
+require_once __DIR__ . '/email-templates.php';
+
 // Start session with security
 function initializeSession(): void {
     if (session_status() === PHP_SESSION_NONE) {
@@ -419,22 +425,8 @@ function updateSetting(string $key, mixed $value, ?int $userId = null): bool {
 }
 
 function logActivity(string $action, string $description = '', ?int $userId = null): void {
-    try {
-        $db = getDB();
-        $userId = $userId ?? ($_SESSION['user_id'] ?? null);
-        $ipAddress = getRealIpAddress();
-        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
-        
-        $stmt = $db->prepare("
-            INSERT INTO activity_logs (user_id, action, description, ip_address, user_agent) 
-            VALUES (?, ?, ?, ?, ?)
-        ");
-        
-        $stmt->execute([$userId, $action, $description, $ipAddress, $userAgent]);
-        
-    } catch (Exception $e) {
-        error_log("Error logging activity: " . $e->getMessage());
-    }
+    // Use the new logging system
+    log_user_activity($action, $description);
 }
 
 /**
