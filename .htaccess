@@ -16,6 +16,10 @@ Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
 # RewriteCond %{HTTPS} off
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+# Force HTTPS (uncomment when SSL certificate is installed)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 # Remove index.php from URLs
 RewriteCond %{THE_REQUEST} /([^/]+/)*index\.php[\s?] [NC]
 RewriteRule ^(([^/]+/)*)index\.php$ /$1 [R=301,L]

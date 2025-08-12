@@ -66,8 +66,8 @@ define('UPLOAD_PATH', __DIR__ . '/../uploads/');
 // Email Configuration - Production Ready
 define('SMTP_HOST', 'smtp.gmail.com');
 define('SMTP_PORT', 587);
-define('SMTP_USERNAME', 'info@buffalo-marathon.com'); // Production email
-define('SMTP_PASSWORD', 'your-app-password');         // Update with actual app password
+define('SMTP_USERNAME', 'noreply@buffalo-marathon.com'); // Production email
+define('SMTP_PASSWORD', 'Buffalo@2025');                 // Production password
 define('SMTP_ENCRYPTION', 'tls');
 
 // Environment Settings
