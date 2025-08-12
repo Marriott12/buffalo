@@ -162,13 +162,17 @@ if (isset($_GET['category'])) {
         // Ignore error
     }
 }
-
-$page_title = 'Create Account - Buffalo Marathon 2025';
-$page_description = 'Create your Buffalo Marathon 2025 account and join Zambia\'s premier running event.';
-
-// Include header
-include 'includes/header.php';
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Buffalo Marathon 2025</title>
+    <meta name="description" content="Create your Buffalo Marathon 2025 account and join Zambia's premier running event.">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     
     <style>
         :root {
@@ -467,9 +471,6 @@ include 'includes/header.php';
                 this.setCustomValidity('');
             }
         });
-</script>
-
-<?php
-// Include footer
-include 'includes/footer.php';
-?>
+    </script>
+</body>
+</html>

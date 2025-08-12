@@ -27,27 +27,37 @@ try {
 
 $registration_open = isRegistrationOpen();
 $early_bird_active = isEarlyBirdActive();
-
-$page_title = 'Race Categories - Buffalo Marathon 2025';
-$page_description = 'Choose from 6 exciting race categories at Buffalo Marathon 2025. Full Marathon, Half Marathon, 10K, 5K, VIP Run, and Kids Race.';
-
-// Include header
-include 'includes/header.php';
 ?>
-<style>
-/* Categories page specific styles */
-.categories-header {
-    background: linear-gradient(135deg, var(--army-green), var(--army-green-dark));
-    color: white;
-    padding: 4rem 0;
-}
-
-.category-card {
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Race Categories - Buffalo Marathon 2025</title>
+    <meta name="description" content="Choose from 6 exciting race categories at Buffalo Marathon 2025. Full Marathon, Half Marathon, 10K, 5K, VIP Run, and Kids Race.">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --army-green: #4B5320;
+            --army-green-dark: #222B1F;
+            --gold: #FFD700;
+        }
+        
+        .categories-header {
+            background: linear-gradient(135deg, var(--army-green), var(--army-green-dark));
+            color: white;
+            padding: 4rem 0;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
             height: 100%;
             border: 2px solid transparent;
         }
@@ -521,7 +531,22 @@ include 'includes/header.php';
         </section>
     <?php endif; ?>
 
-<?php
-// Include footer
-include 'includes/footer.php';
-?>
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 Buffalo Marathon Organization. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="/contact.php" class="text-light text-decoration-none me-3">Contact Us</a>
+                    <a href="/terms.php" class="text-light text-decoration-none me-3">Terms</a>
+                    <a href="/privacy.php" class="text-light text-decoration-none">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

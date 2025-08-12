@@ -22,13 +22,17 @@ try {
 }
 
 $days_until_marathon = getDaysUntilMarathon();
-
-$page_title = 'Event Schedule - Buffalo Marathon 2025';
-$page_description = 'Complete event schedule for Buffalo Marathon 2025. Race times, activities, entertainment, and important event information.';
-
-// Include header
-include 'includes/header.php';
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Schedule - Buffalo Marathon 2025</title>
+    <meta name="description" content="Complete event schedule for Buffalo Marathon 2025. Race times, activities, entertainment, and important event information.">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     
     <style>
         :root {
@@ -511,7 +515,22 @@ include 'includes/header.php';
         </div>
     <?php endif; ?>
 
-<?php
-// Include footer
-include 'includes/footer.php';
-?>
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 Buffalo Marathon Organization. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="/contact.php" class="text-light text-decoration-none me-3">Contact Us</a>
+                    <a href="/faq.php" class="text-light text-decoration-none me-3">FAQ</a>
+                    <a href="/info.php" class="text-light text-decoration-none">Event Info</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

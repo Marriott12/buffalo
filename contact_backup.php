@@ -98,13 +98,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
-$page_title = 'Contact Us - Buffalo Marathon 2025';
-$page_description = 'Contact Buffalo Marathon 2025 organizers. Get support, ask questions, or provide feedback about Zambia\'s premier running event.';
-
-// Include header
-include 'includes/header.php';
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Buffalo Marathon 2025</title>
+    <meta name="description" content="Contact Buffalo Marathon 2025 organizers. Get support, ask questions, or provide feedback about Zambia's premier running event.">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     
     <style>
@@ -501,38 +504,53 @@ include 'includes/header.php';
         </div>
     </section>
 
-<script>
-// Character counter for message field
-const messageField = document.getElementById('message');
-if (messageField) {
-    const counter = document.createElement('small');
-    counter.className = 'text-muted';
-    messageField.parentNode.appendChild(counter);
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 Buffalo Marathon Organization. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="/terms.php" class="text-light text-decoration-none me-3">Terms</a>
+                    <a href="/privacy.php" class="text-light text-decoration-none me-3">Privacy</a>
+                    <a href="/faq.php" class="text-light text-decoration-none">FAQ</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
-    function updateCounter() {
-        const length = messageField.value.length;
-        counter.textContent = `${length} characters`;
-        
-        if (length < 10) {
-            counter.className = 'text-danger';
-        } else {
+    <script>
+        // Character counter for message field
+        const messageField = document.getElementById('message');
+        if (messageField) {
+            const counter = document.createElement('small');
             counter.className = 'text-muted';
+            messageField.parentNode.appendChild(counter);
+            
+            function updateCounter() {
+                const length = messageField.value.length;
+                counter.textContent = `${length} characters`;
+                
+                if (length < 10) {
+                    counter.className = 'text-danger';
+                } else {
+                    counter.className = 'text-muted';
+                }
+            }
+            
+            messageField.addEventListener('input', updateCounter);
+            updateCounter();
         }
-    }
-    
-    messageField.addEventListener('input', updateCounter);
-    updateCounter();
-}
-
-// Form submission loading state
-document.querySelector('form').addEventListener('submit', function() {
-    const submitBtn = this.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
-});
-</script>
-
-<?php
-// Include footer
-include 'includes/footer.php';
-?>
+        
+        // Form submission loading state
+        document.querySelector('form').addEventListener('submit', function() {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+        });
+    </script>
+</body>
+</html>

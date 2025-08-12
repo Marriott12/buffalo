@@ -6,13 +6,13 @@
 
 define('BUFFALO_SECURE_ACCESS', true);
 require_once 'includes/functions.php';
-
-$page_title = 'Terms of Service - Buffalo Marathon 2025';
-$page_description = 'Buffalo Marathon 2025 Terms of Service and event conditions. Important information for all participants.';
-
-// Include header
-include 'includes/header.php';
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Buffalo Marathon 2025</title>
     <meta name="description" content="Terms of Service for Buffalo Marathon 2025. Read our terms and conditions for registration and participation.">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -455,11 +455,6 @@ include 'includes/header.php';
                 }
             });
         });
-            });
-    });
-</script>
-
-<?php
-// Include footer
-include 'includes/footer.php';
-?>
+    </script>
+</body>
+</html>
