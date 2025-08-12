@@ -323,7 +323,7 @@ if (isset($_GET['category'])) {
                                         <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
                                         <input type="tel" class="form-control" id="phone" name="phone" 
                                                value="<?php echo htmlspecialchars($form_data['phone'] ?? ''); ?>" 
-                                               placeholder="+260 XXX XXXXXX" required>
+                                               placeholder="+260 XXX XXXXXX (e.g., +260 972 545 658)" required>
                                     </div>
                                 </div>
                                 

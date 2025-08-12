@@ -88,7 +88,7 @@
                         </p>
                         <p class="mb-0">
                             <i class="fas fa-phone me-2"></i>
-                            <?php echo getSetting('contact_phone', '+260 XXX XXXXXXX'); ?>
+                            <?php echo getSetting('contact_phone', CONTACT_PHONES_ALL ?? '+260 972 545 658 / +260 770 809 062 / +260 771 470 868'); ?>
                         </p>
                     </div>
                 </div>

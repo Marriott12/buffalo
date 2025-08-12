@@ -373,7 +373,7 @@ require_once 'includes/functions.php';
                                     <p><strong>Email:</strong><br><?php echo SITE_EMAIL; ?></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p><strong>Phone:</strong><br>+260-XXX-XXXXXX</p>
+                                    <p><strong>Phone:</strong><br>+260 972 545 658 / +260 770 809 062 / +260 771 470 868</p>
                                 </div>
                                 <div class="col-12">
                                     <p><strong>Address:</strong><br>

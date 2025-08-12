@@ -598,6 +598,45 @@ function clearCache(string $key = null): bool {
 }
 
 /**
+ * CONTACT INFORMATION FUNCTIONS
+ */
+
+function getContactPhone(string $type = 'all'): string {
+    return match($type) {
+        'primary' => defined('CONTACT_PHONE_PRIMARY') ? CONTACT_PHONE_PRIMARY : '+260 972 545 658',
+        'secondary' => defined('CONTACT_PHONE_SECONDARY') ? CONTACT_PHONE_SECONDARY : '+260 770 809 062',
+        'tertiary' => defined('CONTACT_PHONE_TERTIARY') ? CONTACT_PHONE_TERTIARY : '+260 771 470 868',
+        'all' => defined('CONTACT_PHONES_ALL') ? CONTACT_PHONES_ALL : '+260 972 545 658 / +260 770 809 062 / +260 771 470 868',
+        default => getSetting("contact_phone_{$type}", '+260 972 545 658')
+    };
+}
+
+function getContactEmail(string $type = 'general'): string {
+    return match($type) {
+        'admin' => defined('ADMIN_EMAIL') ? ADMIN_EMAIL : 'admin@buffalo-marathon.com',
+        'noreply' => defined('NOREPLY_EMAIL') ? NOREPLY_EMAIL : 'noreply@buffalo-marathon.com',
+        'general' => defined('SITE_EMAIL') ? SITE_EMAIL : 'info@buffalo-marathon.com',
+        default => getSetting("contact_email_{$type}", 'info@buffalo-marathon.com')
+    };
+}
+
+function getSiteUrl(): string {
+    return defined('SITE_URL') ? SITE_URL : 'https://buffalo-marathon.com';
+}
+
+function formatPhoneForDisplay(string $phone): string {
+    // Clean the phone number
+    $clean = preg_replace('/[^\d+]/', '', $phone);
+    
+    // Format Zambian numbers
+    if (str_starts_with($clean, '+260')) {
+        return '+260 ' . substr($clean, 4, 3) . ' ' . substr($clean, 7, 3) . ' ' . substr($clean, 10);
+    }
+    
+    return $phone;
+}
+
+/**
  * ERROR HANDLING
  */
 

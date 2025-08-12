@@ -18,16 +18,22 @@ if (!defined('BUFFALO_SECURE_ACCESS')) {
 
 // Site Configuration
 define('SITE_NAME', 'Buffalo Marathon 2025');
-define('SITE_URL', 'https://buffalo-marathon.com'); // UPDATE WITH YOUR DOMAIN
+define('SITE_URL', 'https://buffalo-marathon.com');
 define('SITE_EMAIL', 'info@buffalo-marathon.com');
 define('ADMIN_EMAIL', 'admin@buffalo-marathon.com');
 define('NOREPLY_EMAIL', 'noreply@buffalo-marathon.com');
 
-// Database Configuration - UPDATE WITH YOUR PRODUCTION DETAILS
+// Contact Information
+define('CONTACT_PHONE_PRIMARY', '+260 972 545 658');
+define('CONTACT_PHONE_SECONDARY', '+260 770 809 062');
+define('CONTACT_PHONE_TERTIARY', '+260 771 470 868');
+define('CONTACT_PHONES_ALL', '+260 972 545 658 / +260 770 809 062 / +260 771 470 868');
+
+// Database Configuration - Production Ready
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'envithcy_buffalo_marathon');
-define('DB_USER', 'envithcy_buffalo');    // UPDATE THIS
-define('DB_PASS', 'buffalo-marathon2025'); // UPDATE THIS
+define('DB_USER', 'envithcy_buffalo');
+define('DB_PASS', 'buffalo-marathon2025');
 define('DB_CHARSET', 'utf8mb4');
 
 // Event Configuration
@@ -39,11 +45,11 @@ define('EVENT_VENUE', 'Buffalo Park Recreation Centre');
 define('EVENT_ADDRESS', 'Chalala-Along Joe Chibangu Road');
 define('EVENT_CITY', 'Lusaka, Zambia');
 
-// Current Status (August 8, 2025)
-define('CURRENT_DATE', '2025-08-08');
-define('DAYS_UNTIL_MARATHON', 64);
-define('DAYS_UNTIL_DEADLINE', 53);
-define('DAYS_UNTIL_EARLY_BIRD', 23);
+// Current Status (August 12, 2025)
+define('CURRENT_DATE', '2025-08-12');
+define('DAYS_UNTIL_MARATHON', 60);  // Updated calculation
+define('DAYS_UNTIL_DEADLINE', 49);  // Updated calculation
+define('DAYS_UNTIL_EARLY_BIRD', 19); // Updated calculation
 
 // Security Configuration
 define('CSRF_TOKEN_NAME', 'csrf_token');
@@ -57,11 +63,11 @@ define('UPLOAD_MAX_SIZE', 5242880); // 5MB
 define('UPLOAD_ALLOWED_TYPES', ['jpg', 'jpeg', 'png', 'pdf']);
 define('UPLOAD_PATH', __DIR__ . '/../uploads/');
 
-// Email Configuration
-define('SMTP_HOST', 'smtp.gmail.com'); // UPDATE WITH YOUR SMTP
+// Email Configuration - Production Ready
+define('SMTP_HOST', 'smtp.gmail.com');
 define('SMTP_PORT', 587);
-define('SMTP_USERNAME', 'your-email@gmail.com'); // UPDATE THIS
-define('SMTP_PASSWORD', 'your-app-password');    // UPDATE THIS
+define('SMTP_USERNAME', 'info@buffalo-marathon.com'); // Production email
+define('SMTP_PASSWORD', 'your-app-password');         // Update with actual app password
 define('SMTP_ENCRYPTION', 'tls');
 
 // Environment Settings

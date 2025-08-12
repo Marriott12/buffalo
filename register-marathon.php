@@ -479,7 +479,7 @@ $selected_category_id = $_GET['category'] ?? $form_data['category_id'] ?? null;
                                         <label for="emergency_contact_phone" class="form-label">Emergency Contact Phone</label>
                                         <input type="tel" class="form-control" id="emergency_contact_phone" name="emergency_contact_phone" 
                                                value="<?php echo htmlspecialchars($form_data['emergency_contact_phone'] ?? $user['emergency_contact_phone'] ?? ''); ?>"
-                                               placeholder="+260 XXX XXXXXX">
+                                               placeholder="+260 XXX XXXXXX (e.g., +260 972 545 658)">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="dietary_restrictions" class="form-label">Dietary Restrictions</label>

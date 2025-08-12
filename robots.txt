@@ -1,5 +1,6 @@
 # Buffalo Marathon 2025 - Robots.txt
-# Production Ready - 2025-08-08 14:16:14 UTC
+# Production Ready - Updated 2025-08-12
+# Contact: info@buffalo-marathon.com | +260 972 545 658
 
 User-agent: *
 Allow: /

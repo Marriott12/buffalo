@@ -241,7 +241,7 @@ require_once 'includes/functions.php';
                             <p>To exercise any of these rights, contact us at:</p>
                             <ul>
                                 <li><strong>Email:</strong> privacy@buffalo-marathon.com</li>
-                                <li><strong>Phone:</strong> +260-XXX-XXXXXX</li>
+                                <li><strong>Phone:</strong> +260 972 545 658 / +260 770 809 062 / +260 771 470 868</li>
                                 <li><strong>Mail:</strong> Buffalo Marathon Organization, Data Protection Officer</li>
                             </ul>
                             <p class="text-muted"><small>We will respond to your request within 30 days. Some information may be retained as required by law or legitimate business purposes.</small></p>
@@ -355,12 +355,12 @@ require_once 'includes/functions.php';
                                 <div class="col-md-4">
                                     <h6 class="text-army-green">Data Protection Officer</h6>
                                     <p>privacy@buffalo-marathon.com<br>
-                                    +260-XXX-XXXXXX</p>
+                                    +260 972 545 658</p>
                                 </div>
                                 <div class="col-md-4">
                                     <h6 class="text-army-green">General Inquiries</h6>
                                     <p>info@buffalo-marathon.com<br>
-                                    +260-XXX-XXXXXX</p>
+                                    +260 770 809 062</p>
                                 </div>
                                 <div class="col-md-4">
                                     <h6 class="text-army-green">Mailing Address</h6>
