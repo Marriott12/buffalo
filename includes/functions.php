@@ -248,11 +248,36 @@ function setFlash($type, $message) {
     $_SESSION['flash'][] = ['type' => $type, 'message' => $message];
 }
 
+function setFlashMessage($type, $message) {
+    // Alias for setFlash for consistency with existing code
+    setFlash($type, $message);
+}
+
 function getFlash() {
     startSecureSession();
     $messages = $_SESSION['flash'] ?? [];
     unset($_SESSION['flash']);
     return $messages;
+}
+
+function getAllFlashMessages() {
+    startSecureSession();
+    $messages = $_SESSION['flash'] ?? [];
+    
+    // Format messages for compatibility with existing template code
+    $formatted = [];
+    foreach ($messages as $flash) {
+        $type = $flash['type'] ?? 'info';
+        $message = $flash['message'] ?? '';
+        
+        // Return each message as a separate entry (not grouped by type)
+        $formatted[] = ['type' => $type, 'message' => $message];
+    }
+    
+    // Clear messages after retrieving them
+    unset($_SESSION['flash']);
+    
+    return $formatted;
 }
 
 function hasFlash() {
@@ -767,5 +792,31 @@ function requireAdmin() {
         header('Location: login.php');
         exit;
     }
+}
+
+// Date/Time formatting functions
+function formatDateTime($datetime, $format = 'M j, Y g:i A') {
+    if (empty($datetime)) {
+        return '';
+    }
+    
+    try {
+        if (is_string($datetime)) {
+            $dt = new DateTime($datetime);
+        } elseif ($datetime instanceof DateTime) {
+            $dt = $datetime;
+        } else {
+            return '';
+        }
+        
+        return $dt->format($format);
+    } catch (Exception $e) {
+        error_log("Error formatting datetime: " . $e->getMessage());
+        return $datetime; // Return original value as fallback
+    }
+}
+
+function formatTime($time, $format = 'g:i A') {
+    return formatDateTime($time, $format);
 }
 ?>

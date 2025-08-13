@@ -250,7 +250,9 @@ $registration_open = isRegistrationOpen();
     <!-- Flash Messages -->
     <?php
     $flash_messages = getAllFlashMessages();
-    foreach ($flash_messages as $type => $message):
+    foreach ($flash_messages as $flash):
+        $type = $flash['type'];
+        $message = $flash['message'];
         $alert_class = match($type) {
             'success' => 'alert-success',
             'error' => 'alert-danger',
