@@ -1,53 +1,463 @@
--- Buffalo Marathon 2025 Database Schema
+-- =====================================================
+-- Buffalo Marathon 2025 - Production Database Schema
+-- Updated: August 13, 2025
+-- Version: 2.0 (Production Ready)
+-- =====================================================
+
+-- Create database with proper character set for international support
 CREATE DATABASE IF NOT EXISTS buffalo_marathon CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE buffalo_marathon;
 
--- Users table
+-- =====================================================
+-- USERS TABLE
+-- =====================================================
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    phone VARCHAR(20),
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(25),
+    date_of_birth DATE,
+    gender ENUM('Male', 'Female', 'Other'),
+    nationality VARCHAR(100) DEFAULT 'Zambian',
     password VARCHAR(255) NOT NULL,
-    role ENUM('user', 'admin') DEFAULT 'user',
+    role ENUM('user', 'admin', 'staff') DEFAULT 'user',
+    status ENUM('active', 'inactive', 'suspended') DEFAULT 'active',
     email_verified BOOLEAN DEFAULT FALSE,
     verification_token VARCHAR(255),
     reset_token VARCHAR(255),
     reset_expires DATETIME,
     last_login DATETIME,
+    login_attempts INT DEFAULT 0,
+    lockout_until DATETIME NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
     INDEX idx_email (email),
-    INDEX idx_role (role)
+    INDEX idx_role (role),
+    INDEX idx_status (status),
+    INDEX idx_verification (verification_token),
+    INDEX idx_reset (reset_token)
 );
 
--- Marathon categories
+-- =====================================================
+-- CATEGORIES TABLE (Race Categories)
+-- =====================================================
 CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    distance VARCHAR(20) NOT NULL,
-    fee DECIMAL(10,2) NOT NULL,
+    distance VARCHAR(50) NOT NULL,
     description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    early_bird_price DECIMAL(10,2),
+    max_participants INT DEFAULT 0,
+    min_age INT DEFAULT 5,
+    max_age INT DEFAULT 100,
+    start_time TIME,
+    estimated_duration VARCHAR(50),
     is_active BOOLEAN DEFAULT TRUE,
     sort_order INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    features JSON,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    INDEX idx_active (is_active),
+    INDEX idx_sort (sort_order)
 );
 
--- Registrations table
+-- =====================================================
+-- REGISTRATIONS TABLE
+-- =====================================================
 CREATE TABLE registrations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     category_id INT NOT NULL,
     registration_number VARCHAR(20) UNIQUE NOT NULL,
-    age INT NOT NULL,
-    gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    status ENUM('pending', 'confirmed', 'cancelled', 'completed') DEFAULT 'pending',
+    payment_status ENUM('pending', 'paid', 'cancelled', 'refunded', 'failed') DEFAULT 'pending',
+    
+    -- Personal Information
     emergency_contact_name VARCHAR(100) NOT NULL,
-    emergency_contact_phone VARCHAR(20) NOT NULL,
-    tshirt_size ENUM('XS', 'S', 'M', 'L', 'XL', 'XXL') NOT NULL,
+    emergency_contact_phone VARCHAR(25) NOT NULL,
+    emergency_contact_relationship VARCHAR(50),
+    
+    -- Race Information
+    estimated_finish_time VARCHAR(20),
+    tshirt_size ENUM('XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL') NOT NULL,
+    
+    -- Medical Information
     medical_conditions TEXT,
+    medications TEXT,
     dietary_requirements TEXT,
-    payment_status ENUM('pending', 'paid', 'cancelled', 'refunded') DEFAULT 'pending',
+    
+    -- Payment Information
+    amount_paid DECIMAL(10,2) DEFAULT 0.00,
+    payment_method VARCHAR(50),
+    payment_reference VARCHAR(100),
+    payment_date DATETIME,
+    
+    -- Event Day Information
+    bib_number VARCHAR(20),
+    start_time DATETIME,
+    finish_time DATETIME,
+    official_time TIME,
+    
+    -- Administrative
+    notes TEXT,
+    confirmed_at DATETIME,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT,
+    
+    INDEX idx_user_id (user_id),
+    INDEX idx_category_id (category_id),
+    INDEX idx_status (status),
+    INDEX idx_payment_status (payment_status),
+    INDEX idx_registration_number (registration_number),
+    INDEX idx_bib_number (bib_number)
+);
+
+-- =====================================================
+-- PAYMENTS TABLE
+-- =====================================================
+CREATE TABLE payments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    registration_id INT NOT NULL,
+    user_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(3) DEFAULT 'ZMW',
+    payment_method ENUM('mobile_money', 'bank_transfer', 'card', 'cash', 'other') NOT NULL,
+    payment_provider VARCHAR(50),
+    transaction_id VARCHAR(100),
+    reference_number VARCHAR(100),
+    status ENUM('pending', 'processing', 'completed', 'failed', 'cancelled', 'refunded') DEFAULT 'pending',
+    
+    -- Mobile Money Details
+    phone_number VARCHAR(25),
+    network_provider VARCHAR(50),
+    
+    -- Payment Response Data
+    provider_response JSON,
+    
+    -- Administrative
+    processed_by INT,
+    processed_at DATETIME,
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (registration_id) REFERENCES registrations(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (processed_by) REFERENCES users(id) ON DELETE SET NULL,
+    
+    INDEX idx_registration_id (registration_id),
+    INDEX idx_user_id (user_id),
+    INDEX idx_status (status),
+    INDEX idx_transaction_id (transaction_id),
+    INDEX idx_reference_number (reference_number),
+    INDEX idx_payment_method (payment_method)
+);
+
+-- =====================================================
+-- ANNOUNCEMENTS TABLE
+-- =====================================================
+CREATE TABLE announcements (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    type ENUM('info', 'important', 'urgent', 'success', 'warning') DEFAULT 'info',
+    target_audience ENUM('all', 'registered', 'unregistered', 'admins') DEFAULT 'all',
+    is_active BOOLEAN DEFAULT TRUE,
+    show_on_homepage BOOLEAN DEFAULT FALSE,
+    show_on_dashboard BOOLEAN DEFAULT TRUE,
+    
+    -- Publishing
+    published_at DATETIME,
+    expires_at DATETIME,
+    
+    -- Author Information
+    created_by INT NOT NULL,
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE,
+    
+    INDEX idx_active (is_active),
+    INDEX idx_type (type),
+    INDEX idx_target (target_audience),
+    INDEX idx_published (published_at),
+    INDEX idx_expires (expires_at)
+);
+
+-- =====================================================
+-- EVENT SCHEDULE TABLE
+-- =====================================================
+CREATE TABLE schedules (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event_name VARCHAR(255) NOT NULL,
+    event_description TEXT,
+    event_date DATE NOT NULL,
+    event_time TIME NOT NULL,
+    end_time TIME,
+    location VARCHAR(255),
+    category_id INT,
+    event_type ENUM('race', 'activity', 'ceremony', 'registration', 'other') DEFAULT 'other',
+    is_active BOOLEAN DEFAULT TRUE,
+    display_order INT DEFAULT 0,
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
+    
+    INDEX idx_date (event_date),
+    INDEX idx_time (event_time),
+    INDEX idx_active (is_active),
+    INDEX idx_type (event_type),
+    INDEX idx_order (display_order)
+);
+
+-- =====================================================
+-- SYSTEM SETTINGS TABLE
+-- =====================================================
+CREATE TABLE settings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    setting_key VARCHAR(100) UNIQUE NOT NULL,
+    setting_value TEXT,
+    setting_type ENUM('string', 'number', 'boolean', 'json', 'date', 'time') DEFAULT 'string',
+    description TEXT,
+    is_public BOOLEAN DEFAULT FALSE,
+    category VARCHAR(50) DEFAULT 'general',
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    INDEX idx_key (setting_key),
+    INDEX idx_category (category),
+    INDEX idx_public (is_public)
+);
+
+-- =====================================================
+-- CONTACT MESSAGES TABLE
+-- =====================================================
+CREATE TABLE contact_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(25),
+    subject VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    inquiry_type ENUM('general', 'registration', 'payment', 'technical', 'partnership', 'media', 'other') DEFAULT 'general',
+    status ENUM('new', 'read', 'replied', 'resolved', 'archived') DEFAULT 'new',
+    priority ENUM('low', 'normal', 'high', 'urgent') DEFAULT 'normal',
+    
+    -- Response Information
+    replied_by INT,
+    replied_at DATETIME,
+    reply_message TEXT,
+    
+    -- Administrative
+    assigned_to INT,
+    notes TEXT,
+    ip_address VARCHAR(45),
+    user_agent TEXT,
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (replied_by) REFERENCES users(id) ON DELETE SET NULL,
+    FOREIGN KEY (assigned_to) REFERENCES users(id) ON DELETE SET NULL,
+    
+    INDEX idx_status (status),
+    INDEX idx_type (inquiry_type),
+    INDEX idx_priority (priority),
+    INDEX idx_created (created_at)
+);
+
+-- =====================================================
+-- ACTIVITY LOGS TABLE
+-- =====================================================
+CREATE TABLE activity_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    action VARCHAR(100) NOT NULL,
+    entity_type VARCHAR(50),
+    entity_id INT,
+    description TEXT,
+    ip_address VARCHAR(45),
+    user_agent TEXT,
+    additional_data JSON,
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+    
+    INDEX idx_user_id (user_id),
+    INDEX idx_action (action),
+    INDEX idx_entity (entity_type, entity_id),
+    INDEX idx_created (created_at)
+);
+
+-- =====================================================
+-- INSERT DEFAULT DATA
+-- =====================================================
+
+-- Default Admin User
+INSERT INTO users (first_name, last_name, email, phone, password, role, email_verified, created_at) VALUES
+('Buffalo', 'Admin', 'admin@buffalo-marathon.com', '+260 972 545 658', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', TRUE, NOW());
+
+-- Race Categories
+INSERT INTO categories (name, distance, description, price, early_bird_price, max_participants, min_age, start_time, sort_order, is_active) VALUES
+('Full Marathon', '42.2 KM', 'The ultimate challenge for serious runners. Experience the full Buffalo Marathon distance.', 200.00, 150.00, 500, 18, '06:00:00', 1, TRUE),
+('Half Marathon', '21.1 KM', 'Perfect for intermediate runners looking for a challenging but achievable distance.', 150.00, 120.00, 800, 16, '06:30:00', 2, TRUE),
+('Power Challenge', '10 KM', 'High-intensity 10K race for competitive runners and fitness enthusiasts.', 100.00, 80.00, 1000, 14, '07:00:00', 3, TRUE),
+('Family Fun Run', '5 KM', 'A fun run perfect for families, beginners, and those looking for a social running experience.', 75.00, 60.00, 1500, 8, '07:30:00', 4, TRUE),
+('VIP Run', '5 KM', 'Premium race experience with exclusive amenities and special treatment.', 250.00, 200.00, 100, 18, '08:00:00', 5, TRUE),
+('Kid Run', '1 KM', 'Special race designed for children to experience the joy of running.', 25.00, 20.00, 300, 5, '08:30:00', 6, TRUE);
+
+-- System Settings
+INSERT INTO settings (setting_key, setting_value, setting_type, description, category, is_public) VALUES
+('site_name', 'Buffalo Marathon 2025', 'string', 'Website name', 'general', TRUE),
+('marathon_date', '2025-10-11', 'date', 'Marathon event date', 'event', TRUE),
+('registration_deadline', '2025-10-01', 'date', 'Registration deadline', 'registration', TRUE),
+('early_bird_deadline', '2025-08-31', 'date', 'Early bird pricing deadline', 'registration', TRUE),
+('registration_open', 'true', 'boolean', 'Registration status', 'registration', TRUE),
+('max_registrations', '4000', 'number', 'Maximum total registrations', 'registration', FALSE),
+('contact_phone_1', '+260 972 545 658', 'string', 'Primary contact phone', 'contact', TRUE),
+('contact_phone_2', '+260 770 809 062', 'string', 'Secondary contact phone', 'contact', TRUE),
+('contact_phone_3', '+260 771 470 868', 'string', 'Tertiary contact phone', 'contact', TRUE),
+('contact_email', 'info@buffalo-marathon.com', 'string', 'Main contact email', 'contact', TRUE),
+('smtp_host', 'smtp.gmail.com', 'string', 'SMTP server host', 'email', FALSE),
+('smtp_username', 'noreply@buffalo-marathon.com', 'string', 'SMTP username', 'email', FALSE),
+('smtp_password', 'Buffalo@2025', 'string', 'SMTP password', 'email', FALSE),
+('smtp_port', '587', 'number', 'SMTP port', 'email', FALSE),
+('event_location', 'Buffalo Park Recreation Centre', 'string', 'Event venue', 'event', TRUE),
+('event_city', 'Lusaka', 'string', 'Event city', 'event', TRUE),
+('event_country', 'Zambia', 'string', 'Event country', 'event', TRUE);
+
+-- Sample Schedule Events
+INSERT INTO schedules (event_name, event_description, event_date, event_time, end_time, location, event_type, display_order, is_active) VALUES
+('Registration Opens', 'Online and physical registration begins', '2025-08-01', '00:00:00', '23:59:59', 'Online & Buffalo Park', 'registration', 1, TRUE),
+('Early Bird Period Ends', 'Last day for early bird pricing', '2025-08-31', '23:59:59', '23:59:59', 'Online', 'registration', 2, TRUE),
+('Race Packet Collection', 'Collect your race materials and bib number', '2025-10-09', '09:00:00', '18:00:00', 'Buffalo Park Recreation Centre', 'registration', 3, TRUE),
+('Race Packet Collection', 'Collect your race materials and bib number', '2025-10-10', '09:00:00', '20:00:00', 'Buffalo Park Recreation Centre', 'registration', 4, TRUE),
+('Marathon Start', 'Full Marathon (42.2 KM) race begins', '2025-10-11', '06:00:00', '06:00:00', 'Buffalo Park Recreation Centre', 'race', 5, TRUE),
+('Half Marathon Start', 'Half Marathon (21.1 KM) race begins', '2025-10-11', '06:30:00', '06:30:00', 'Buffalo Park Recreation Centre', 'race', 6, TRUE),
+('10K Power Challenge Start', '10K race begins', '2025-10-11', '07:00:00', '07:00:00', 'Buffalo Park Recreation Centre', 'race', 7, TRUE),
+('Family Fun Run Start', '5K family race begins', '2025-10-11', '07:30:00', '07:30:00', 'Buffalo Park Recreation Centre', 'race', 8, TRUE),
+('VIP Run Start', 'VIP 5K race begins', '2025-10-11', '08:00:00', '08:00:00', 'Buffalo Park Recreation Centre', 'race', 9, TRUE),
+('Kids Run Start', '1K kids race begins', '2025-10-11', '08:30:00', '08:30:00', 'Buffalo Park Recreation Centre', 'race', 10, TRUE),
+('Awards Ceremony', 'Prize giving and closing ceremony', '2025-10-11', '11:00:00', '13:00:00', 'Buffalo Park Recreation Centre', 'ceremony', 11, TRUE);
+
+-- Sample Announcement
+INSERT INTO announcements (title, content, type, target_audience, is_active, show_on_homepage, show_on_dashboard, published_at, created_by) VALUES
+('Welcome to Buffalo Marathon 2025!', 'Registration is now open for Buffalo Marathon 2025. Early bird pricing available until August 31st. Join us for an unforgettable running experience at Buffalo Park Recreation Centre.', 'info', 'all', TRUE, TRUE, TRUE, NOW(), 1);
+
+-- =====================================================
+-- CREATE VIEWS FOR REPORTING
+-- =====================================================
+
+-- Registration Summary View
+CREATE VIEW v_registration_summary AS
+SELECT 
+    c.name as category_name,
+    c.distance,
+    c.price,
+    COUNT(r.id) as total_registrations,
+    COUNT(CASE WHEN r.payment_status = 'paid' THEN 1 END) as paid_registrations,
+    COUNT(CASE WHEN r.status = 'confirmed' THEN 1 END) as confirmed_registrations,
+    SUM(CASE WHEN r.payment_status = 'paid' THEN p.amount ELSE 0 END) as total_revenue
+FROM categories c
+LEFT JOIN registrations r ON c.id = r.category_id
+LEFT JOIN payments p ON r.id = p.registration_id AND p.status = 'completed'
+WHERE c.is_active = TRUE
+GROUP BY c.id, c.name, c.distance, c.price
+ORDER BY c.sort_order;
+
+-- User Registration View
+CREATE VIEW v_user_registrations AS
+SELECT 
+    u.id as user_id,
+    CONCAT(u.first_name, ' ', u.last_name) as full_name,
+    u.email,
+    u.phone,
+    r.registration_number,
+    c.name as category_name,
+    c.distance,
+    r.status as registration_status,
+    r.payment_status,
+    r.amount_paid,
+    r.bib_number,
+    r.created_at as registration_date
+FROM users u
+JOIN registrations r ON u.id = r.user_id
+JOIN categories c ON r.category_id = c.id
+ORDER BY r.created_at DESC;
+
+-- =====================================================
+-- INDEXES FOR PERFORMANCE
+-- =====================================================
+
+-- Additional indexes for better performance
+CREATE INDEX idx_registrations_created_date ON registrations(DATE(created_at));
+CREATE INDEX idx_payments_created_date ON payments(DATE(created_at));
+CREATE INDEX idx_users_created_date ON users(DATE(created_at));
+CREATE INDEX idx_contact_messages_created_date ON contact_messages(DATE(created_at));
+
+-- =====================================================
+-- DATABASE PROCEDURES
+-- =====================================================
+
+DELIMITER //
+
+-- Generate unique registration number
+CREATE FUNCTION generate_registration_number(category_prefix VARCHAR(5)) 
+RETURNS VARCHAR(20)
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+    DECLARE reg_number VARCHAR(20);
+    DECLARE counter INT;
+    
+    SELECT COUNT(*) + 1 INTO counter FROM registrations WHERE registration_number LIKE CONCAT(category_prefix, '%');
+    SET reg_number = CONCAT(category_prefix, YEAR(NOW()), LPAD(counter, 4, '0'));
+    
+    RETURN reg_number;
+END//
+
+DELIMITER ;
+
+-- =====================================================
+-- FINAL NOTES
+-- =====================================================
+-- This schema supports:
+-- 1. Complete user management with role-based access
+-- 2. Flexible race categories with pricing tiers
+-- 3. Comprehensive registration system
+-- 4. Payment tracking and processing
+-- 5. Event scheduling and announcements
+-- 6. Contact form management
+-- 7. Activity logging for audit trails
+-- 8. System settings for easy configuration
+-- 9. Reporting views for analytics
+-- 10. Performance optimized with proper indexing
+-- 
+-- Production Ready Features:
+-- - UTF8MB4 encoding for international support
+-- - Proper foreign key constraints
+-- - Comprehensive indexing
+-- - Data validation through ENUM types
+-- - JSON support for flexible data storage
+-- - Activity logging for security
+-- - Views for efficient reporting
+-- - Default data for immediate use
+--
+-- Contact: +260 972 545 658 / +260 770 809 062 / +260 771 470 868
+-- Email: info@buffalo-marathon.com
+-- =====================================================
     payment_method VARCHAR(50),
     payment_reference VARCHAR(100),
     race_pack_collected BOOLEAN DEFAULT FALSE,
