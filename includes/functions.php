@@ -828,4 +828,168 @@ function getArrayValue($array, $key, $default = null) {
 function safeArrayGet($array, $key, $default = '') {
     return $array[$key] ?? $default;
 }
+
+// Settings functions
+function getSetting($key, $default = null) {
+    try {
+        $pdo = getDatabaseConnection();
+        if (!$pdo) {
+            return $default;
+        }
+        
+        $stmt = $pdo->prepare("SELECT value FROM settings WHERE setting_key = ?");
+        $stmt->execute([$key]);
+        $result = $stmt->fetchColumn();
+        
+        return $result !== false ? $result : $default;
+    } catch (Exception $e) {
+        error_log("Error getting setting '{$key}': " . $e->getMessage());
+        return $default;
+    }
+}
+
+function setSetting($key, $value) {
+    try {
+        $pdo = getDatabaseConnection();
+        if (!$pdo) {
+            return false;
+        }
+        
+        $stmt = $pdo->prepare("INSERT INTO settings (setting_key, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = VALUES(value)");
+        return $stmt->execute([$key, $value]);
+    } catch (Exception $e) {
+        error_log("Error setting '{$key}': " . $e->getMessage());
+        return false;
+    }
+}
+
+function getMultipleSettings($keys) {
+    try {
+        $pdo = getDatabaseConnection();
+        if (!$pdo || empty($keys)) {
+            return [];
+        }
+        
+        $placeholders = str_repeat('?,', count($keys) - 1) . '?';
+        $stmt = $pdo->prepare("SELECT setting_key, value FROM settings WHERE setting_key IN ($placeholders)");
+        $stmt->execute($keys);
+        
+        $settings = [];
+        while ($row = $stmt->fetch()) {
+            $settings[$row['setting_key']] = $row['value'];
+        }
+        
+        return $settings;
+    } catch (Exception $e) {
+        error_log("Error getting multiple settings: " . $e->getMessage());
+        return [];
+    }
+}
+
+// Navigation and RBAC helper functions
+function getNavigationItems($userRole = 'guest') {
+    $baseItems = [
+        'home' => ['url' => 'index.php', 'title' => 'Home', 'icon' => 'fas fa-home'],
+        'categories' => ['url' => 'categories.php', 'title' => 'Categories', 'icon' => 'fas fa-list'],
+        'schedule' => ['url' => 'schedule.php', 'title' => 'Schedule', 'icon' => 'fas fa-calendar-alt'],
+        'info' => ['url' => 'info.php', 'title' => 'Info', 'icon' => 'fas fa-info-circle'],
+        'contact' => ['url' => 'contact.php', 'title' => 'Contact', 'icon' => 'fas fa-envelope'],
+        'faq' => ['url' => 'faq.php', 'title' => 'FAQ', 'icon' => 'fas fa-question-circle']
+    ];
+    
+    $userItems = [
+        'dashboard' => ['url' => 'dashboard.php', 'title' => 'Dashboard', 'icon' => 'fas fa-tachometer-alt'],
+        'profile' => ['url' => 'profile.php', 'title' => 'My Profile', 'icon' => 'fas fa-user'],
+        'my-registration' => ['url' => 'my-registration.php', 'title' => 'My Registration', 'icon' => 'fas fa-running']
+    ];
+    
+    $adminItems = [
+        'admin-dashboard' => ['url' => 'admin/dashboard.php', 'title' => 'Admin Dashboard', 'icon' => 'fas fa-tachometer-alt'],
+        'participants' => ['url' => 'admin/participants.php', 'title' => 'Participants', 'icon' => 'fas fa-users'],
+        'payments' => ['url' => 'admin/payments.php', 'title' => 'Payments', 'icon' => 'fas fa-credit-card'],
+        'announcements' => ['url' => 'admin/announcements.php', 'title' => 'Announcements', 'icon' => 'fas fa-bullhorn'],
+        'reports' => ['url' => 'admin/reports.php', 'title' => 'Reports', 'icon' => 'fas fa-chart-bar'],
+        'settings' => ['url' => 'admin/settings.php', 'title' => 'Settings', 'icon' => 'fas fa-cog']
+    ];
+    
+    switch ($userRole) {
+        case 'admin':
+            return array_merge($baseItems, $userItems, $adminItems);
+        case 'user':
+            return array_merge($baseItems, $userItems);
+        default:
+            return $baseItems;
+    }
+}
+
+function getUserRole() {
+    if (!isLoggedIn()) {
+        return 'guest';
+    }
+    
+    return $_SESSION['user_role'] ?? 'user';
+}
+
+function canAccessPage($page, $userRole = null) {
+    if ($userRole === null) {
+        $userRole = getUserRole();
+    }
+    
+    $adminPages = ['admin/', 'participants.php', 'payments.php', 'announcements.php', 'reports.php', 'settings.php'];
+    $userPages = ['dashboard.php', 'profile.php', 'my-registration.php', 'register-marathon.php'];
+    
+    // Admin can access everything
+    if ($userRole === 'admin') {
+        return true;
+    }
+    
+    // Check if trying to access admin page
+    foreach ($adminPages as $adminPage) {
+        if (strpos($page, $adminPage) !== false) {
+            return false;
+        }
+    }
+    
+    // Check if logged in user trying to access user page
+    if (in_array(basename($page), $userPages)) {
+        return $userRole !== 'guest';
+    }
+    
+    // Public pages accessible to all
+    return true;
+}
+
+function isCurrentPage($url) {
+    $currentPage = basename($_SERVER['PHP_SELF']);
+    $targetPage = basename($url);
+    
+    return $currentPage === $targetPage;
+}
+
+function getActiveClass($url) {
+    return isCurrentPage($url) ? 'active' : '';
+}
+
+function renderNavigationItem($item, $isInAdmin = false) {
+    $url = $item['url'];
+    $title = $item['title'];
+    $icon = $item['icon'];
+    $activeClass = getActiveClass($url);
+    
+    // Adjust URL for admin context
+    if ($isInAdmin && !str_contains($url, 'admin/')) {
+        $url = '../' . $url;
+    } elseif (!$isInAdmin && str_contains($url, 'admin/')) {
+        // Don't show admin URLs in regular navigation
+        return '';
+    }
+    
+    return sprintf(
+        '<li class="nav-item"><a class="nav-link %s" href="%s"><i class="%s me-1"></i>%s</a></li>',
+        $activeClass,
+        htmlspecialchars($url),
+        htmlspecialchars($icon),
+        htmlspecialchars($title)
+    );
+}
 ?>

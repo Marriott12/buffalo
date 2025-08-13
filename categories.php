@@ -12,16 +12,12 @@ $categories = [];
 try {
     $db = getDB();
     $stmt = $db->query("
-        SELECT c.id, c.name, c.distance, c.description, c.price, c.early_bird_price, 
-               c.max_participants, c.min_age, c.max_age, c.start_time, c.sort_order, 
-               c.is_active, c.created_at, c.updated_at,
+        SELECT c.*, 
                COUNT(r.id) as registration_count
         FROM categories c
         LEFT JOIN registrations r ON c.id = r.category_id AND r.payment_status != 'cancelled'
         WHERE c.is_active = 1
-        GROUP BY c.id, c.name, c.distance, c.description, c.price, c.early_bird_price, 
-                 c.max_participants, c.min_age, c.max_age, c.start_time, c.sort_order, 
-                 c.is_active, c.created_at, c.updated_at
+        GROUP BY c.id
         ORDER BY FIELD(c.name, 'Full Marathon', 'Half Marathon', 'Power Challenge', 'Family Fun Run', 'VIP Run', 'Kid Run')
     ");
     $categories = $stmt->fetchAll();
@@ -31,27 +27,37 @@ try {
 
 $registration_open = isRegistrationOpen();
 $early_bird_active = isEarlyBirdActive();
-
-$page_title = 'Race Categories - Buffalo Marathon 2025';
-$page_description = 'Choose from 6 exciting race categories at Buffalo Marathon 2025. Full Marathon, Half Marathon, 10K, 5K, VIP Run, and Kids Race.';
-
-// Include header
-include 'includes/header.php';
 ?>
-<style>
-/* Categories page specific styles */
-.categories-header {
-    background: linear-gradient(135deg, var(--army-green), var(--army-green-dark));
-    color: white;
-    padding: 4rem 0;
-}
-
-.category-card {
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Race Categories - Buffalo Marathon 2025</title>
+    <meta name="description" content="Choose from 6 exciting race categories at Buffalo Marathon 2025. Full Marathon, Half Marathon, 10K, 5K, VIP Run, and Kids Race.">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --army-green: #4B5320;
+            --army-green-dark: #222B1F;
+            --gold: #FFD700;
+        }
+        
+        .categories-header {
+            background: linear-gradient(135deg, var(--army-green), var(--army-green-dark));
+            color: white;
+            padding: 4rem 0;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
             height: 100%;
             border: 2px solid transparent;
         }
@@ -208,7 +214,7 @@ include 'includes/header.php';
                     <?php if (isLoggedIn()): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                <i class="fas fa-user me-1"></i><?php echo htmlspecialchars(getCurrentUserEmail() ?: 'User'); ?>
+                                <i class="fas fa-user me-1"></i><?php echo htmlspecialchars($_SESSION['user_email']); ?>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/dashboard.php">Dashboard</a></li>
@@ -308,37 +314,31 @@ include 'includes/header.php';
                                 <div class="mb-3">
                                     <small class="text-muted">
                                         <i class="fas fa-users me-1"></i>
-                                        Age Requirement: 
-                                        <?php 
-                                        $min_age = $category['min_age'] ?? 5;
-                                        $max_age = $category['max_age'] ?? 100;
-                                        echo $min_age . '-' . $max_age; 
-                                        ?> years
+                                        Age Requirement: <?php echo $category['min_age']; ?>-<?php echo $category['max_age']; ?> years
                                     </small>
                                 </div>
                                 
                                 <!-- Availability -->
-                                <?php $max_participants = $category['max_participants'] ?? 0; ?>
-                                <?php if ($max_participants > 0): ?>
+                                <?php if ($category['max_participants'] > 0): ?>
                                     <div class="mb-4">
                                         <div class="d-flex justify-content-between mb-2">
                                             <small class="text-muted">Availability</small>
                                             <small class="text-muted">
-                                                <?php echo $category['registration_count']; ?>/<?php echo $max_participants; ?>
+                                                <?php echo $category['registration_count']; ?>/<?php echo $category['max_participants']; ?>
                                             </small>
                                         </div>
                                         <div class="availability-bar">
                                             <div class="availability-fill" 
-                                                 style="width: <?php echo min(($category['registration_count'] / $max_participants) * 100, 100); ?>%"></div>
+                                                 style="width: <?php echo min(($category['registration_count'] / $category['max_participants']) * 100, 100); ?>%"></div>
                                         </div>
-                                        <?php if ($category['registration_count'] >= $max_participants): ?>
+                                        <?php if ($category['registration_count'] >= $category['max_participants']): ?>
                                             <small class="text-danger mt-1 d-block"><i class="fas fa-exclamation-triangle me-1"></i>Fully Booked</small>
                                         <?php endif; ?>
                                     </div>
                                 <?php endif; ?>
                                 
                                 <!-- Registration Button -->
-                                <?php if ($registration_open && ($max_participants == 0 || $category['registration_count'] < $max_participants)): ?>
+                                <?php if ($registration_open && ($category['max_participants'] == 0 || $category['registration_count'] < $category['max_participants'])): ?>
                                     <?php if (isLoggedIn()): ?>
                                         <a href="/register-marathon.php?category=<?php echo $category['id']; ?>" 
                                            class="btn btn-army-green w-100">
@@ -396,9 +396,9 @@ include 'includes/header.php';
                                 </td>
                                 <td><?php echo htmlspecialchars($category['distance']); ?></td>
                                 <td><strong><?php echo formatCurrency($category['price']); ?></strong></td>
-                                <td><?php echo ($category['min_age'] ?? 5) . '-' . ($category['max_age'] ?? 100); ?> years</td>
+                                <td><?php echo $category['min_age']; ?>-<?php echo $category['max_age']; ?> years</td>
                                 <td>
-                                    <?php echo ($category['max_participants'] ?? 0) > 0 ? ($category['max_participants'] ?? 0) : 'Unlimited'; ?>
+                                    <?php echo $category['max_participants'] > 0 ? $category['max_participants'] : 'Unlimited'; ?>
                                 </td>
                                 <td>
                                     <span class="badge bg-army-green"><?php echo $category['registration_count']; ?></span>
@@ -406,7 +406,7 @@ include 'includes/header.php';
                                 <td>
                                     <?php if (!$registration_open): ?>
                                         <span class="badge bg-secondary">Closed</span>
-                                    <?php elseif (($category['max_participants'] ?? 0) > 0 && $category['registration_count'] >= ($category['max_participants'] ?? 0)): ?>
+                                    <?php elseif ($category['max_participants'] > 0 && $category['registration_count'] >= $category['max_participants']): ?>
                                         <span class="badge bg-danger">Full</span>
                                     <?php else: ?>
                                         <span class="badge bg-success">Available</span>

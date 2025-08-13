@@ -1,3 +1,21 @@
+<?php
+// Ensure flash message functions are available
+if (!function_exists('getFlash')) {
+    /**
+     * Gets and clears a flash message from session.
+     * @param string $type
+     * @return string|null
+     */
+    function getFlash($type) {
+        if (isset($_SESSION['flash'][$type])) {
+            $msg = $_SESSION['flash'][$type];
+            unset($_SESSION['flash'][$type]);
+            return $msg;
+        }
+        return null;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,7 +77,13 @@
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
-                <?php if (!str_contains($_SERVER['REQUEST_URI'], '/admin/')): ?>
+                <?php 
+                $isInAdmin = str_contains($_SERVER['REQUEST_URI'], '/admin/');
+                $userRole = getUserRole();
+                $navigationItems = getNavigationItems($userRole);
+                ?>
+                
+                <?php if (!$isInAdmin): ?>
                 <!-- Regular site navigation -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
