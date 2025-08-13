@@ -585,4 +585,71 @@ video {
     }
 }
 
+/* Enhanced Navigation and Scroll Functionality */
+.navbar.fixed-top {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+/* Better navigation contrast on light sections */
+.navbar.navbar-scrolled {
+    background: rgba(75, 83, 32, 0.98) !important;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+/* Scroll to top button with better visibility */
+.scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, var(--army-green), var(--army-green-dark));
+    color: white;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.scroll-to-top:hover {
+    background: linear-gradient(45deg, var(--gold), #FFA500);
+    color: var(--army-green);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    text-decoration: none;
+}
+
+.scroll-to-top.show {
+    display: flex;
+}
+
+/* Improved section spacing */
+.section-spacing {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Better visibility for content on various backgrounds */
+.content-section {
+    padding: 3rem 0;
+}
+
+.content-section.dark {
+    background: var(--army-green);
+    color: white;
+}
+
+.content-section.light {
+    background: var(--gray-50);
+    color: var(--gray-800);
+}
+
 /* End of Buffalo Marathon 2025 Stylesheet */

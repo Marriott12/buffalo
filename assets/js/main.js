@@ -793,8 +793,85 @@ if ('serviceWorker' in navigator) {
 }
 
 /**
+ * Enhanced Navigation and Scroll functionality
+ */
+function initEnhancedNavigation() {
+    const navbar = document.querySelector('.navbar');
+    let scrollToTopBtn = document.getElementById('scrollToTop');
+    
+    // Create scroll-to-top button if it doesn't exist
+    if (!scrollToTopBtn) {
+        scrollToTopBtn = document.createElement('a');
+        scrollToTopBtn.id = 'scrollToTop';
+        scrollToTopBtn.href = '#';
+        scrollToTopBtn.className = 'scroll-to-top';
+        scrollToTopBtn.setAttribute('aria-label', 'Scroll to top');
+        scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        document.body.appendChild(scrollToTopBtn);
+    }
+    
+    // Handle navbar background on scroll for better visibility
+    function handleNavbarScroll() {
+        if (!navbar) return;
+        
+        if (window.scrollY > 100) {
+            navbar.classList.add('navbar-scrolled');
+        } else {
+            navbar.classList.remove('navbar-scrolled');
+        }
+    }
+    
+    // Handle scroll-to-top button visibility
+    function handleScrollToTop() {
+        if (!scrollToTopBtn) return;
+        
+        if (window.scrollY > 300) {
+            scrollToTopBtn.classList.add('show');
+        } else {
+            scrollToTopBtn.classList.remove('show');
+        }
+    }
+    
+    // Throttled scroll handler for better performance
+    let ticking = false;
+    function handleScroll() {
+        if (!ticking) {
+            requestAnimationFrame(function() {
+                handleNavbarScroll();
+                handleScrollToTop();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }
+    
+    // Event listeners
+    window.addEventListener('scroll', handleScroll);
+    
+    // Scroll to top functionality
+    if (scrollToTopBtn) {
+        scrollToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+    
+    // Initial calls
+    handleNavbarScroll();
+    handleScrollToTop();
+}
+
+// Initialize enhanced navigation on DOM load
+document.addEventListener('DOMContentLoaded', function() {
+    initEnhancedNavigation();
+});
+
+/**
  * End of Buffalo Marathon 2025 JavaScript
- * Total Functions: 25+
- * Features: Form validation, accessibility, performance optimization
+ * Total Functions: 26+
+ * Features: Form validation, accessibility, performance optimization, enhanced navigation
  * Browser Support: IE11+, All modern browsers
  */

@@ -32,11 +32,11 @@
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <i class="fas fa-calendar me-2 text-army-green"></i>
-                            <strong>Date:</strong> Saturday, 11 October 2025
+                            <strong>Date:</strong> <?php echo formatDate(MARATHON_DATE, 'l, F j, Y'); ?>
                         </li>
                         <li class="mb-2">
                             <i class="fas fa-clock me-2 text-army-green"></i>
-                            <strong>Time:</strong> 7:00 AM Start
+                            <strong>Time:</strong> <?php echo date('g:i A', strtotime(MARATHON_TIME)); ?> Start
                         </li>
                         <li class="mb-2">
                             <i class="fas fa-map-marker-alt me-2 text-army-green"></i>
@@ -44,10 +44,12 @@
                         </li>
                         <li class="mb-2">
                             <i class="fas fa-road me-2 text-army-green"></i>
-                            <strong>Address:</strong> <?php echo EVENT_ADDRESS; ?>
+                            <strong>Address:</strong> <?php echo EVENT_ADDRESS; ?>, <?php echo EVENT_CITY; ?>
                         </li>
                         <li class="mb-2">
                             <i class="fas fa-exclamation-circle me-2 text-army-green"></i>
+                            <strong>Registration Deadline:</strong> <?php echo formatDate(REGISTRATION_DEADLINE, 'F j, Y'); ?>
+                        </li>
                             <strong>Registration Deadline:</strong> 30 September 2025
                         </li>
                     </ul>

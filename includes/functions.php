@@ -1100,4 +1100,27 @@ function addNavigationSecurity($pageType = 'public') {
             break;
     }
 }
+
+/**
+ * Truncate text to a specified length with ellipsis
+ * @param string $text The text to truncate
+ * @param int $length Maximum length
+ * @param string $suffix Suffix to add (default: '...')
+ * @return string Truncated text
+ */
+function truncateText($text, $length = 150, $suffix = '...') {
+    if (strlen($text) <= $length) {
+        return $text;
+    }
+    
+    // Find the last space within the limit to avoid cutting words
+    $truncated = substr($text, 0, $length);
+    $lastSpace = strrpos($truncated, ' ');
+    
+    if ($lastSpace !== false && $lastSpace > $length * 0.75) {
+        $truncated = substr($truncated, 0, $lastSpace);
+    }
+    
+    return $truncated . $suffix;
+}
 ?>

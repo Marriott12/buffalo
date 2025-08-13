@@ -2457,3 +2457,79 @@ Stack trace:
 [13-Aug-2025 15:51:11 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'
 [13-Aug-2025 15:53:25 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'
 [13-Aug-2025 15:57:07 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'
+[13-Aug-2025 16:01:31 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'
+[13-Aug-2025 16:05:23 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'
+[13-Aug-2025 16:05:40 Africa/Lusaka] Error getting registration stats: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'buffalo_marathon.payments' doesn't exist
+[13-Aug-2025 16:05:40 Africa/Lusaka] Error fetching categories: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'price' in 'field list'
+[13-Aug-2025 16:05:40 Africa/Lusaka] Warning: Headers already sent in C:\wamp64\www\buffalo-marathon\index.php on line 108. Cannot start session.
+[13-Aug-2025 16:05:40 Africa/Lusaka] Warning: Headers already sent in C:\wamp64\www\buffalo-marathon\index.php on line 108. Cannot start session.
+[13-Aug-2025 16:05:40 Africa/Lusaka] Warning: Headers already sent in C:\wamp64\www\buffalo-marathon\index.php on line 108. Cannot start session.
+[13-Aug-2025 16:07:45 Africa/Lusaka] Error getting registration stats: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'buffalo_marathon.payments' doesn't exist
+[13-Aug-2025 16:07:45 Africa/Lusaka] Error fetching categories: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'price' in 'field list'
+[13-Aug-2025 16:08:38 Africa/Lusaka] Profile registration fetch error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'c.price' in 'field list'
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\wamp64\www\buffalo-marathon\profile.php on line 400
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\profile.php:0
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   2. htmlspecialchars($string = NULL) C:\wamp64\www\buffalo-marathon\profile.php:400
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Warning:  Undefined array key "date_of_birth" in C:\wamp64\www\buffalo-marathon\profile.php on line 408
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\profile.php:0
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\wamp64\www\buffalo-marathon\profile.php on line 408
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\profile.php:0
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   2. htmlspecialchars($string = NULL) C:\wamp64\www\buffalo-marathon\profile.php:408
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Warning:  Undefined array key "gender" in C:\wamp64\www\buffalo-marathon\profile.php on line 415
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\profile.php:0
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Warning:  Undefined array key "gender" in C:\wamp64\www\buffalo-marathon\profile.php on line 416
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\profile.php:0
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Warning:  Undefined array key "gender" in C:\wamp64\www\buffalo-marathon\profile.php on line 417
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\profile.php:0
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Warning:  Undefined array key "emergency_contact_name" in C:\wamp64\www\buffalo-marathon\profile.php on line 429
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\profile.php:0
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\wamp64\www\buffalo-marathon\profile.php on line 429
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\profile.php:0
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   2. htmlspecialchars($string = NULL) C:\wamp64\www\buffalo-marathon\profile.php:429
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Warning:  Undefined array key "emergency_contact_phone" in C:\wamp64\www\buffalo-marathon\profile.php on line 434
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\profile.php:0
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\wamp64\www\buffalo-marathon\profile.php on line 434
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\profile.php:0
+[13-Aug-2025 16:08:38 Africa/Lusaka] PHP   2. htmlspecialchars($string = NULL) C:\wamp64\www\buffalo-marathon\profile.php:434
+[13-Aug-2025 16:09:17 Africa/Lusaka] Dashboard registration fetch error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'c.price' in 'field list'
+[13-Aug-2025 16:09:18 Africa/Lusaka] Dashboard announcements fetch error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'type' in 'field list'
+[13-Aug-2025 16:10:01 Africa/Lusaka] Error getting registration stats: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'buffalo_marathon.payments' doesn't exist
+[13-Aug-2025 16:10:01 Africa/Lusaka] Error fetching categories: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'price' in 'field list'
+[13-Aug-2025 16:11:12 Africa/Lusaka] Error getting registration stats: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'buffalo_marathon.payments' doesn't exist
+[13-Aug-2025 16:11:12 Africa/Lusaka] Error fetching categories: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'price' in 'field list'
+[13-Aug-2025 16:18:36 Africa/Lusaka] Error getting registration stats: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'buffalo_marathon.payments' doesn't exist
+[13-Aug-2025 16:18:36 Africa/Lusaka] Error fetching categories: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'price' in 'field list'
+[13-Aug-2025 16:18:37 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'
+[13-Aug-2025 16:18:46 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'
+[13-Aug-2025 16:25:56 Africa/Lusaka] PHP Fatal error:  Uncaught Error: Call to undefined function redirectTo() in C:\wamp64\www\buffalo-marathon\register-marathon.php:32
+Stack trace:
+#0 {main}
+  thrown in C:\wamp64\www\buffalo-marathon\register-marathon.php on line 32
+[13-Aug-2025 16:26:40 Africa/Lusaka] Error getting registration stats: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'buffalo_marathon.payments' doesn't exist
+[13-Aug-2025 16:26:40 Africa/Lusaka] Error fetching categories: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'price' in 'field list'
+[13-Aug-2025 16:26:40 Africa/Lusaka] PHP Warning:  Array to string conversion in C:\wamp64\www\buffalo-marathon\includes\header.php on line 278
+[13-Aug-2025 16:26:40 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 16:26:40 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\index.php:0
+[13-Aug-2025 16:26:40 Africa/Lusaka] PHP   2. include() C:\wamp64\www\buffalo-marathon\index.php:56
+[13-Aug-2025 16:26:40 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'
+[13-Aug-2025 16:27:55 Africa/Lusaka] Dashboard registration fetch error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'c.price' in 'field list'
+[13-Aug-2025 16:27:55 Africa/Lusaka] Dashboard announcements fetch error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'type' in 'field list'
+[13-Aug-2025 16:28:22 Africa/Lusaka] Error getting registration stats: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'buffalo_marathon.payments' doesn't exist
+[13-Aug-2025 16:28:22 Africa/Lusaka] Error fetching categories: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'price' in 'field list'
+[13-Aug-2025 16:29:07 Africa/Lusaka] Dashboard registration fetch error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'c.price' in 'field list'
+[13-Aug-2025 16:29:07 Africa/Lusaka] Dashboard announcements fetch error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'type' in 'field list'
+[13-Aug-2025 16:29:15 Africa/Lusaka] Dashboard registration fetch error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'c.price' in 'field list'
+[13-Aug-2025 16:29:15 Africa/Lusaka] Dashboard announcements fetch error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'type' in 'field list'
+[13-Aug-2025 16:29:34 Africa/Lusaka] Error getting registration stats: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'buffalo_marathon.payments' doesn't exist
+[13-Aug-2025 16:29:34 Africa/Lusaka] Error fetching categories: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'price' in 'field list'
+[13-Aug-2025 16:29:34 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'

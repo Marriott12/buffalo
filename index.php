@@ -150,7 +150,7 @@ include 'includes/header.php';
             backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 2.5rem;
-            margin: 3rem 0;
+            margin: 3rem 0 6rem 0; /* Increased bottom margin to prevent overlap */
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
@@ -332,7 +332,8 @@ include 'includes/header.php';
         .stats-container {
             background: linear-gradient(135deg, var(--army-green), var(--army-green-dark));
             color: white;
-            padding: 4rem 0;
+            padding: 5rem 0; /* Increased padding for better separation */
+            margin-top: 2rem; /* Added top margin for separation */
         }
         
         .stat-item {
@@ -363,6 +364,63 @@ include 'includes/header.php';
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* Improved Navigation Visibility */
+        .navbar.fixed-top {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        /* Better navigation contrast on light sections */
+        .navbar.navbar-scrolled {
+            background: rgba(75, 83, 32, 0.98) !important;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+        
+        /* Scroll to top button with better visibility */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--army-green), var(--army-green-dark));
+            color: white;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.2rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .scroll-to-top:hover {
+            background: linear-gradient(45deg, var(--gold), #FFA500);
+            color: var(--army-green);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        
+        .scroll-to-top.show {
+            display: flex;
+        }
+        
+        /* Enhanced responsiveness */
+        @media (max-width: 768px) {
+            .countdown-container {
+                margin: 2rem 0 4rem 0;
+                padding: 2rem;
+            }
+            
+            .stats-container {
+                padding: 3rem 0;
+            }
+        }
     </style>
 
     <!-- Flash Messages -->
@@ -386,7 +444,7 @@ include 'includes/header.php';
     ?>
         <div class="alert <?php echo $alert_class; ?> alert-dismissible fade show m-0" style="position: fixed; top: 76px; left: 0; right: 0; z-index: 1050; border-radius: 0;">
             <div class="container">
-                <i class="<?php echo $icon; ?> me-2"></i><?php echo htmlspecialchars($message); ?>
+                <i class="<?php echo $icon; ?> me-2"></i><?php echo htmlspecialchars(is_array($message) ? $message['message'] : $message); ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         </div>
@@ -828,7 +886,75 @@ include 'includes/header.php';
         </div>
     </section>
 
+    <!-- Scroll to Top Button -->
+    <a href="#" class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
 <?php
 // Include footer
 include 'includes/footer.php';
 ?>
+
+<script>
+// Enhanced Navigation and Scroll functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const navbar = document.querySelector('.navbar');
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+    
+    // Handle navbar background on scroll for better visibility
+    function handleNavbarScroll() {
+        if (window.scrollY > 100) {
+            navbar.classList.add('navbar-scrolled');
+        } else {
+            navbar.classList.remove('navbar-scrolled');
+        }
+    }
+    
+    // Handle scroll-to-top button visibility
+    function handleScrollToTop() {
+        if (window.scrollY > 300) {
+            scrollToTopBtn.classList.add('show');
+        } else {
+            scrollToTopBtn.classList.remove('show');
+        }
+    }
+    
+    // Scroll event listener
+    window.addEventListener('scroll', function() {
+        handleNavbarScroll();
+        handleScrollToTop();
+    });
+    
+    // Scroll to top functionality
+    scrollToTopBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Animate numbers on scroll
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-number');
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.stat-number, .countdown-number').forEach(el => {
+        observer.observe(el);
+    });
+    
+    // Initial calls
+    handleNavbarScroll();
+    handleScrollToTop();
+});
+</script>
