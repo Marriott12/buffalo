@@ -433,4 +433,156 @@ video {
     height: auto;
 }
 
+/* ===== RBAC Navigation Enhancements ===== */
+
+/* Navigation improvements */
+.navbar-nav .nav-link {
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 0 4px;
+    font-weight: 500;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.navbar-nav .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+}
+
+.navbar-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 30px;
+    height: 2px;
+    background-color: var(--gold);
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+/* Dropdown menu enhancements */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 0.5rem 0;
+    margin-top: 8px;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s ease;
+    border-radius: 0;
+    font-weight: 500;
+}
+
+.dropdown-item:hover {
+    background-color: var(--army-green);
+    color: white;
+    transform: translateX(4px);
+}
+
+.dropdown-item i {
+    width: 20px;
+    text-align: center;
+}
+
+.dropdown-header {
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.75rem 1.5rem 0.5rem;
+}
+
+.dropdown-divider {
+    margin: 0.5rem 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Admin-specific navigation styling */
+.navbar.admin-nav {
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d) !important;
+}
+
+.admin-nav .navbar-brand {
+    color: var(--gold) !important;
+}
+
+.admin-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.admin-nav .nav-link:hover {
+    color: var(--gold) !important;
+    background-color: rgba(255, 215, 0, 0.1);
+}
+
+.admin-nav .nav-link.active {
+    color: var(--gold) !important;
+    background-color: rgba(255, 215, 0, 0.15);
+}
+
+/* Role badges in navigation */
+.role-badge {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.role-badge.admin {
+    background-color: var(--gold);
+    color: var(--army-green);
+}
+
+.role-badge.user {
+    background-color: var(--army-green);
+    color: white;
+}
+
+/* Navigation accessibility improvements */
+.navbar-nav .nav-link:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
+.dropdown-item:focus {
+    outline: 2px solid var(--army-green);
+    outline-offset: -2px;
+}
+
+/* Mobile navigation improvements */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background-color: rgba(0, 0, 0, 0.95);
+        margin-top: 1rem;
+        border-radius: 12px;
+        padding: 1rem;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 0.75rem 1rem;
+        margin: 2px 0;
+        border-radius: 8px;
+    }
+    
+    .dropdown-menu {
+        background-color: rgba(0, 0, 0, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .dropdown-item {
+        color: white;
+    }
+}
+
 /* End of Buffalo Marathon 2025 Stylesheet */

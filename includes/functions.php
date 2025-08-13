@@ -992,4 +992,62 @@ function renderNavigationItem($item, $isInAdmin = false) {
         htmlspecialchars($title)
     );
 }
+
+// Navigation security middleware
+function checkPageAccess($requiredRole = 'user') {
+    $currentRole = getUserRole();
+    
+    // Define role hierarchy
+    $roleHierarchy = [
+        'guest' => 0,
+        'user' => 1,
+        'admin' => 2
+    ];
+    
+    $currentLevel = $roleHierarchy[$currentRole] ?? 0;
+    $requiredLevel = $roleHierarchy[$requiredRole] ?? 1;
+    
+    if ($currentLevel < $requiredLevel) {
+        // Redirect based on requirement
+        if ($requiredRole === 'admin') {
+            setFlashMessage('error', 'Admin access required.');
+            header('Location: ../login.php');
+        } else {
+            setFlashMessage('error', 'Please login to access this page.');
+            header('Location: login.php');
+        }
+        exit;
+    }
+    
+    return true;
+}
+
+function protectAdminPage() {
+    return checkPageAccess('admin');
+}
+
+function protectUserPage() {
+    return checkPageAccess('user');
+}
+
+function addNavigationSecurity($pageType = 'public') {
+    // Add security headers
+    header('X-Frame-Options: DENY');
+    header('X-Content-Type-Options: nosniff');
+    header('X-XSS-Protection: 1; mode=block');
+    
+    // Check access based on page type
+    switch ($pageType) {
+        case 'admin':
+            protectAdminPage();
+            break;
+        case 'user':
+            protectUserPage();
+            break;
+        case 'public':
+        default:
+            // Public page, no additional restrictions
+            break;
+    }
+}
 ?>
