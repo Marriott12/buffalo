@@ -83,7 +83,7 @@ include 'includes/header.php';
                                 <dd class="col-sm-7"><?php echo htmlspecialchars($registration['distance']); ?></dd>
                                 
                                 <dt class="col-sm-5">Registration Fee:</dt>
-                                <dd class="col-sm-7"><?php echo formatCurrency($registration['price']); ?></dd>
+                                <dd class="col-sm-7"><?php echo formatCurrency($registration['price'] ?? 0); ?></dd>
                                 
                                 <dt class="col-sm-5">Age:</dt>
                                 <dd class="col-sm-7"><?php echo $registration['age']; ?> years</dd>

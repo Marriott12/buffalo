@@ -425,7 +425,7 @@ $selected_category_id = $_GET['category'] ?? $form_data['category_id'] ?? null;
                                                 <div class="text-center mb-3">
                                                     <h6 class="fw-bold text-army-green"><?php echo htmlspecialchars($category['name']); ?></h6>
                                                     <p class="text-muted mb-2"><?php echo htmlspecialchars($category['distance']); ?></p>
-                                                    <div class="category-price"><?php echo formatCurrency($category['price']); ?></div>
+                                                    <div class="category-price"><?php echo formatCurrency($category['price'] ?? 0); ?></div>
                                                 </div>
                                                 
                                                 <p class="text-muted small mb-3"><?php echo htmlspecialchars($category['description']); ?></p>

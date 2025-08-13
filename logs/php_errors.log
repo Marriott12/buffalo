@@ -2454,3 +2454,6 @@ Stack trace:
 [13-Aug-2025 15:48:34 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
 [13-Aug-2025 15:48:34 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'
 [13-Aug-2025 15:49:47 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'
+[13-Aug-2025 15:51:11 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'
+[13-Aug-2025 15:53:25 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'
+[13-Aug-2025 15:57:07 Africa/Lusaka] Error getting setting 'contact_phone': SQLSTATE[42S22]: Column not found: 1054 Unknown column 'value' in 'field list'

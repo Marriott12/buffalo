@@ -12,12 +12,14 @@ $categories = [];
 try {
     $db = getDB();
     $stmt = $db->query("
-        SELECT c.*, 
+        SELECT c.id, c.name, c.distance, c.description, c.price, c.early_bird_price, 
+               c.max_participants, c.min_age, c.start_time, c.sort_order, c.is_active,
                COUNT(r.id) as registration_count
         FROM categories c
         LEFT JOIN registrations r ON c.id = r.category_id AND r.payment_status != 'cancelled'
         WHERE c.is_active = 1
-        GROUP BY c.id
+        GROUP BY c.id, c.name, c.distance, c.description, c.price, c.early_bird_price, 
+                 c.max_participants, c.min_age, c.start_time, c.sort_order, c.is_active
         ORDER BY FIELD(c.name, 'Full Marathon', 'Half Marathon', 'Power Challenge', 'Family Fun Run', 'VIP Run', 'Kid Run')
     ");
     $categories = $stmt->fetchAll();
@@ -297,7 +299,7 @@ include 'includes/header.php';
                             <div class="category-header">
                                 <h4 class="fw-bold mb-2"><?php echo htmlspecialchars($category['name']); ?></h4>
                                 <p class="mb-0 fs-5 opacity-75"><?php echo htmlspecialchars($category['distance']); ?></p>
-                                <div class="category-price"><?php echo formatCurrency($category['price']); ?></div>
+                                <div class="category-price"><?php echo formatCurrency($category['price'] ?? 0); ?></div>
                             </div>
                             
                             <div class="category-body">
@@ -401,7 +403,7 @@ include 'includes/header.php';
                                     <strong><?php echo htmlspecialchars($category['name']); ?></strong>
                                 </td>
                                 <td><?php echo htmlspecialchars($category['distance']); ?></td>
-                                <td><strong><?php echo formatCurrency($category['price']); ?></strong></td>
+                                <td><strong><?php echo formatCurrency($category['price'] ?? 0); ?></strong></td>
                                 <td><?php echo $category['min_age']; ?>-<?php echo $category['max_age']; ?> years</td>
                                 <td>
                                     <?php echo $category['max_participants'] > 0 ? $category['max_participants'] : 'Unlimited'; ?>

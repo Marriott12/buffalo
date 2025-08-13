@@ -259,7 +259,7 @@ include 'includes/header.php';
                     <h5 class="fw-bold text-army-green mb-2">
                         <i class="fas fa-running me-2"></i><?php echo htmlspecialchars($selected_category['name']); ?>
                     </h5>
-                    <p class="mb-0">Registration Fee: <strong class="text-army-green"><?php echo formatCurrency($selected_category['price']); ?></strong></p>
+                    <p class="mb-0">Registration Fee: <strong class="text-army-green"><?php echo formatCurrency($selected_category['price'] ?? 0); ?></strong></p>
                 </div>
             <?php endif; ?>
         </div>

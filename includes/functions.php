@@ -535,7 +535,11 @@ function validatePassword($password) {
 
 // Utility Functions
 function formatCurrency($amount, $currency = 'ZMW') {
-    return $currency . ' ' . number_format($amount, 2);
+    // Handle null or empty amounts
+    if ($amount === null || $amount === '' || !is_numeric($amount)) {
+        return $currency . ' 0.00';
+    }
+    return $currency . ' ' . number_format((float)$amount, 2);
 }
 
 function formatDate($date, $format = 'F j, Y') {
