@@ -17,6 +17,11 @@ $email = '';
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check rate limiting first
+    if (!SecurityEnhancer::checkAdvancedRateLimit('login', 5, 300)) {
+        $errors[] = 'Too many login attempts. Please try again later.';
+    }
+    
     // CSRF protection
     if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
         $errors[] = 'Security token invalid. Please try again.';
@@ -42,6 +47,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $db->prepare("SELECT id, email, password, role, first_name FROM users WHERE email = ?");
                 $stmt->execute([$email]);
                 $user = $stmt->fetch();
+                
+                // Log login attempt
+                $ip_address = getRealIpAddress();
+                $stmt = $db->prepare("INSERT INTO login_attempts (email, ip_address, success, user_agent) VALUES (?, ?, ?, ?)");
+                $stmt->execute([
+                    $email,
+                    $ip_address,
+                    $user && verifyPassword($password, $user['password']) ? 1 : 0,
+                    $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown'
+                ]);
                 
                 if ($user && verifyPassword($password, $user['password'])) {
                     // Login successful

@@ -5,14 +5,23 @@ requireAdmin();
 $page_title = 'Admin Dashboard';
 $db = getDB();
 
-// Get comprehensive statistics
+// Get comprehensive statistics using cached data when possible
 $stats = [];
 
-// Basic registration stats
-$stats['total_registrations'] = $db->query("SELECT COUNT(*) FROM registrations WHERE payment_status != 'cancelled'")->fetchColumn();
-$stats['paid_registrations'] = $db->query("SELECT COUNT(*) FROM registrations WHERE payment_status = 'paid'")->fetchColumn();
-$stats['pending_payments'] = $db->query("SELECT COUNT(*) FROM registrations WHERE payment_status = 'pending'")->fetchColumn();
-$stats['total_revenue'] = $db->query("SELECT SUM(c.fee) FROM registrations r JOIN categories c ON r.category_id = c.id WHERE r.payment_status = 'paid'")->fetchColumn() ?? 0;
+// Try to get cached stats first
+try {
+    $cached_stats = CacheManager::getCachedStats();
+    $stats['total_registrations'] = $cached_stats['total_registrations'];
+    $stats['paid_registrations'] = $cached_stats['total_registrations']; // Using confirmed registrations
+    $stats['pending_payments'] = $cached_stats['total_pending'];
+    $stats['total_revenue'] = $cached_stats['total_revenue'];
+} catch (Exception $e) {
+    // Fallback to direct database queries
+    $stats['total_registrations'] = $db->query("SELECT COUNT(*) FROM registrations WHERE payment_status != 'cancelled'")->fetchColumn();
+    $stats['paid_registrations'] = $db->query("SELECT COUNT(*) FROM registrations WHERE payment_status = 'paid'")->fetchColumn();
+    $stats['pending_payments'] = $db->query("SELECT COUNT(*) FROM registrations WHERE payment_status = 'pending'")->fetchColumn();
+    $stats['total_revenue'] = $db->query("SELECT SUM(c.fee) FROM registrations r JOIN categories c ON r.category_id = c.id WHERE r.payment_status = 'paid'")->fetchColumn() ?? 0;
+}
 
 // Category breakdown
 $stmt = $db->query("
@@ -80,6 +89,9 @@ include '../includes/header.php';
                     <a class="nav-link active" href="dashboard.php">
                         <i class="fas fa-tachometer-alt me-2"></i>Dashboard
                     </a>
+                    <a class="nav-link" href="health.php">
+                        <i class="fas fa-heartbeat me-2"></i>System Health
+                    </a>
                     <a class="nav-link" href="participants.php">
                         <i class="fas fa-users me-2"></i>Participants
                     </a>
@@ -97,6 +109,9 @@ include '../includes/header.php';
                     </a>
                     <a class="nav-link" href="reports.php">
                         <i class="fas fa-chart-bar me-2"></i>Reports
+                    </a>
+                    <a class="nav-link" href="analytics.php">
+                        <i class="fas fa-chart-line me-2"></i>Analytics
                     </a>
                     <a class="nav-link" href="settings.php">
                         <i class="fas fa-cogs me-2"></i>Settings

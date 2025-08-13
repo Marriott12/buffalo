@@ -31,7 +31,7 @@ define('CONTACT_PHONES_ALL', '+260 972 545 658 / +260 770 809 062 / +260 771 470
 
 // Database Configuration - Production Ready
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'envithcy_buffalo_marathon');
+define('DB_NAME', 'envithcy_marathon');
 define('DB_USER', 'envithcy_buffalo');
 define('DB_PASS', 'buffalo-marathon2025');
 define('DB_CHARSET', 'utf8mb4');
@@ -63,12 +63,30 @@ define('UPLOAD_MAX_SIZE', 5242880); // 5MB
 define('UPLOAD_ALLOWED_TYPES', ['jpg', 'jpeg', 'png', 'pdf']);
 define('UPLOAD_PATH', __DIR__ . '/../uploads/');
 
-// Email Configuration - Production Ready
-define('SMTP_HOST', 'smtp.gmail.com');
+// Email Configuration - Buffalo Marathon Server
+define('SMTP_HOST', 'mail.buffalo-marathon.com');       // Primary mail server
 define('SMTP_PORT', 587);
 define('SMTP_USERNAME', 'noreply@buffalo-marathon.com'); // Production email
 define('SMTP_PASSWORD', 'Buffalo@2025');                 // Production password
 define('SMTP_ENCRYPTION', 'tls');
+define('SMTP_FROM_NAME', 'Buffalo Marathon 2025');
+define('SMTP_BACKUP_HOST', 'smtp.buffalo-marathon.com');           // Backup server if primary fails
+
+// ZANACO Bank Payment Details
+define('BANK_NAME', 'ZANACO');
+define('BANK_ACCOUNT_NAME', 'Buffalo Park Recreation Center');
+define('BANK_BRANCH', 'Government Complex Branch');
+define('BANK_ACCOUNT_NUMBER', '0307107300745');
+define('BANK_SWIFT_CODE', 'ZANAZMLU');
+define('BANK_CURRENCY', 'ZMW');
+
+// Mobile Money Configuration (Zambian Networks)
+define('MTN_ENABLED', true);
+define('MTN_SHORTCODE', '303');
+define('AIRTEL_ENABLED', true);
+define('AIRTEL_SHORTCODE', '115');
+define('ZAMTEL_ENABLED', true);
+define('ZAMTEL_SHORTCODE', '155');
 
 // Environment Settings
 define('ENVIRONMENT', 'production'); // production, staging, development

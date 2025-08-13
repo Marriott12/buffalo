@@ -257,8 +257,8 @@ include 'includes/header.php';
                                 <div class="fw-semibold">Saturday, 2025</div>
                             </div>
                             <div class="col-md-4">
-                                <div class="h2 fw-bold mb-1">7:00 AM</div>
-                                <div class="fw-semibold">Race Start Time</div>
+                                <div class="h2 fw-bold mb-1">5:30 AM</div>
+                                <div class="fw-semibold">Marathon Start Time</div>
                             </div>
                         </div>
                     </div>

@@ -7,7 +7,7 @@ $db = getDB();
 
 // Get user's registration with detailed information
 $stmt = $db->prepare("
-    SELECT r.*, c.name as category_name, c.distance, c.fee, c.description
+    SELECT r.*, c.name as category_name, c.distance, c.price, c.description
     FROM registrations r 
     JOIN categories c ON r.category_id = c.id 
     WHERE r.user_id = ? AND r.payment_status != 'cancelled'
@@ -83,7 +83,7 @@ include 'includes/header.php';
                                 <dd class="col-sm-7"><?php echo htmlspecialchars($registration['distance']); ?></dd>
                                 
                                 <dt class="col-sm-5">Registration Fee:</dt>
-                                <dd class="col-sm-7"><?php echo formatCurrency($registration['fee']); ?></dd>
+                                <dd class="col-sm-7"><?php echo formatCurrency($registration['price']); ?></dd>
                                 
                                 <dt class="col-sm-5">Age:</dt>
                                 <dd class="col-sm-7"><?php echo $registration['age']; ?> years</dd>

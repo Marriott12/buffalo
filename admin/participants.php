@@ -41,6 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     break;
             }
             
+            // Clear cache after registration status changes
+            CacheManager::clearRegistrationCache();
+            
             logActivity('admin_action', "Admin action: {$action} for registration {$registration_id}");
             
         } catch (Exception $e) {

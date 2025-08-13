@@ -35,11 +35,10 @@ try {
     error_log("Registration check error: " . $e->getMessage());
 }
 
-// Get categories
+// Get categories with cached availability
 $categories = [];
 try {
-    $stmt = $db->query("SELECT * FROM categories WHERE is_active = 1 ORDER BY price");
-    $categories = $stmt->fetchAll();
+    $categories = CacheManager::getCachedCategories();
 } catch (Exception $e) {
     setFlashMessage('error', 'Unable to load race categories. Please try again.');
     redirectTo('/dashboard.php');
@@ -50,6 +49,11 @@ $form_data = [];
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check rate limiting for registration attempts
+    if (!SecurityEnhancer::checkAdvancedRateLimit('registration', 3, 300)) {
+        $errors[] = 'Too many registration attempts. Please try again later.';
+    }
+    
     // CSRF protection
     if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
         $errors[] = 'Security token invalid. Please try again.';
@@ -147,8 +151,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     INSERT INTO registrations (
                         user_id, category_id, registration_number, t_shirt_size,
                         dietary_restrictions, medical_conditions, payment_method,
-                        payment_reference, payment_amount, created_at
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                        payment_reference, payment_amount, ip_address, created_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
                 ");
                 
                 $stmt->execute([
@@ -160,7 +164,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $form_data['medical_conditions'],
                     $form_data['payment_method'],
                     $form_data['payment_reference'],
-                    $payment_amount
+                    $payment_amount,
+                    getRealIpAddress()
                 ]);
                 
                 $registration_id = $db->lastInsertId();
@@ -178,6 +183,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
                 
                 $db->commit();
+                
+                // Clear cache after successful registration
+                CacheManager::clearRegistrationCache();
                 
                 // Log activity
                 logActivity('marathon_registration', "Registered for {$selected_category['name']} - {$registration_number}", $user['id']);

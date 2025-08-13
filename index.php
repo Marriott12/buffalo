@@ -21,14 +21,8 @@ $marathon_status = getMarathonStatus();
 
 // Get categories for display
 try {
-    $db = getDB();
-    $stmt = $db->query("
-        SELECT id, name, distance, description, price, max_participants 
-        FROM categories 
-        WHERE is_active = 1 
-        ORDER BY FIELD(name, 'Full Marathon', 'Half Marathon', 'Power Challenge', 'Family Fun Run', 'VIP Run', 'Kid Run')
-    ");
-    $categories = $stmt->fetchAll();
+    // Use cached categories for better performance
+    $categories = CacheManager::getCachedCategories();
 } catch (Exception $e) {
     $categories = [];
     error_log("Error fetching categories: " . $e->getMessage());

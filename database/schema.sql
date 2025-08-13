@@ -311,12 +311,12 @@ INSERT INTO users (first_name, last_name, email, phone, password, role, email_ve
 
 -- Race Categories
 INSERT INTO categories (name, distance, description, price, early_bird_price, max_participants, min_age, start_time, sort_order, is_active) VALUES
-('Full Marathon', '42.2 KM', 'The ultimate challenge for serious runners. Experience the full Buffalo Marathon distance.', 200.00, 150.00, 500, 18, '06:00:00', 1, TRUE),
-('Half Marathon', '21.1 KM', 'Perfect for intermediate runners looking for a challenging but achievable distance.', 150.00, 120.00, 800, 16, '06:30:00', 2, TRUE),
-('Power Challenge', '10 KM', 'High-intensity 10K race for competitive runners and fitness enthusiasts.', 100.00, 80.00, 1000, 14, '07:00:00', 3, TRUE),
-('Family Fun Run', '5 KM', 'A fun run perfect for families, beginners, and those looking for a social running experience.', 75.00, 60.00, 1500, 8, '07:30:00', 4, TRUE),
-('VIP Run', '5 KM', 'Premium race experience with exclusive amenities and special treatment.', 250.00, 200.00, 100, 18, '08:00:00', 5, TRUE),
-('Kid Run', '1 KM', 'Special race designed for children to experience the joy of running.', 25.00, 20.00, 300, 5, '08:30:00', 6, TRUE);
+('Full Marathon', '42.2 KM', 'The ultimate challenge for serious runners. Experience the full Buffalo Marathon distance.', 200.00, 150.00, 1200, 18, '05:30:00', 1, TRUE),
+('Half Marathon', '21.1 KM', 'Perfect for intermediate runners looking for a challenging but achievable distance.', 150.00, 120.00, 1200, 16, '05:30:00', 2, TRUE),
+('Power Challenge', '10 KM', 'High-intensity 10K race for competitive runners and fitness enthusiasts.', 100.00, 80.00, 1200, 14, '06:00:00', 3, TRUE),
+('Family Fun Run', '5 KM', 'A fun run perfect for families, beginners, and those looking for a social running experience.', 75.00, 60.00, 1200, 8, '06:00:00', 4, TRUE),
+('Kid Run', '1 KM', 'Special race designed for children to experience the joy of running.', 25.00, 20.00, 1200, 5, '06:00:00', 5, TRUE),
+('VIP Run', '5 KM', 'Premium race experience with exclusive amenities and special treatment.', 250.00, 200.00, 1200, 18, '06:30:00', 6, TRUE);
 
 -- System Settings
 INSERT INTO settings (setting_key, setting_value, setting_type, description, category, is_public) VALUES
@@ -342,15 +342,19 @@ INSERT INTO settings (setting_key, setting_value, setting_type, description, cat
 INSERT INTO schedules (event_name, event_description, event_date, event_time, end_time, location, event_type, display_order, is_active) VALUES
 ('Registration Opens', 'Online and physical registration begins', '2025-08-01', '00:00:00', '23:59:59', 'Online & Buffalo Park', 'registration', 1, TRUE),
 ('Early Bird Period Ends', 'Last day for early bird pricing', '2025-08-31', '23:59:59', '23:59:59', 'Online', 'registration', 2, TRUE),
-('Race Packet Collection', 'Collect your race materials and bib number', '2025-10-09', '09:00:00', '18:00:00', 'Buffalo Park Recreation Centre', 'registration', 3, TRUE),
-('Race Packet Collection', 'Collect your race materials and bib number', '2025-10-10', '09:00:00', '20:00:00', 'Buffalo Park Recreation Centre', 'registration', 4, TRUE),
-('Marathon Start', 'Full Marathon (42.2 KM) race begins', '2025-10-11', '06:00:00', '06:00:00', 'Buffalo Park Recreation Centre', 'race', 5, TRUE),
-('Half Marathon Start', 'Half Marathon (21.1 KM) race begins', '2025-10-11', '06:30:00', '06:30:00', 'Buffalo Park Recreation Centre', 'race', 6, TRUE),
-('10K Power Challenge Start', '10K race begins', '2025-10-11', '07:00:00', '07:00:00', 'Buffalo Park Recreation Centre', 'race', 7, TRUE),
-('Family Fun Run Start', '5K family race begins', '2025-10-11', '07:30:00', '07:30:00', 'Buffalo Park Recreation Centre', 'race', 8, TRUE),
-('VIP Run Start', 'VIP 5K race begins', '2025-10-11', '08:00:00', '08:00:00', 'Buffalo Park Recreation Centre', 'race', 9, TRUE),
-('Kids Run Start', '1K kids race begins', '2025-10-11', '08:30:00', '08:30:00', 'Buffalo Park Recreation Centre', 'race', 10, TRUE),
-('Awards Ceremony', 'Prize giving and closing ceremony', '2025-10-11', '11:00:00', '13:00:00', 'Buffalo Park Recreation Centre', 'ceremony', 11, TRUE);
+('Race Pack Collection Day 1', 'Collect your race materials and bib number', '2025-10-01', '08:30:00', '17:00:00', 'Buffalo Park Recreation Centre', 'registration', 3, TRUE),
+('Race Pack Collection Day 2', 'Collect your race materials and bib number', '2025-10-02', '08:30:00', '17:00:00', 'Buffalo Park Recreation Centre', 'registration', 4, TRUE),
+('Race Pack Collection Day 3', 'Collect your race materials and bib number', '2025-10-03', '08:30:00', '17:00:00', 'Buffalo Park Recreation Centre', 'registration', 5, TRUE),
+('Race Pack Collection Day 4', 'Collect your race materials and bib number', '2025-10-04', '08:30:00', '17:00:00', 'Buffalo Park Recreation Centre', 'registration', 6, TRUE),
+('Race Pack Collection Day 5', 'Collect your race materials and bib number', '2025-10-05', '08:30:00', '17:00:00', 'Buffalo Park Recreation Centre', 'registration', 7, TRUE),
+('Marathon Start', 'Full Marathon and Half Marathon start', '2025-10-11', '05:30:00', '05:30:00', 'Start Line', 'race', 8, TRUE),
+('Power Challenge Start', '10KM Power Challenge begins', '2025-10-11', '06:00:00', '06:00:00', 'Start Line', 'race', 9, TRUE),
+('Family Fun Run Start', '5KM Family Fun Run begins', '2025-10-11', '06:00:00', '06:00:00', 'Start Line', 'race', 10, TRUE),
+('Kid Run Start', '1KM Kid Run begins', '2025-10-11', '06:00:00', '06:00:00', 'Start Line', 'race', 11, TRUE),
+('VIP Run Start', '5KM VIP Run begins', '2025-10-11', '06:30:00', '06:30:00', 'Start Line', 'race', 12, TRUE),
+('Post-Race Celebration', 'Food, drinks, and celebration', '2025-10-11', '11:00:00', '12:30:00', 'Event Grounds', 'activity', 13, TRUE),
+('Awards Ceremony', 'Prize giving and medal ceremony', '2025-10-11', '11:30:00', '13:00:00', 'Main Stage', 'ceremony', 14, TRUE),
+('Live Entertainment', 'Zambia Army Pop Band performance', '2025-10-11', '13:00:00', '15:00:00', 'Main Stage', 'activity', 15, TRUE);
 
 -- Sample Announcement
 INSERT INTO announcements (title, content, type, target_audience, is_active, show_on_homepage, show_on_dashboard, published_at, created_by) VALUES

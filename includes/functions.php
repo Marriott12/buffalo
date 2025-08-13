@@ -9,7 +9,13 @@
 if (!defined('BUFFALO_CONFIG_LOADED')) {
     define('BUFFALO_SECURE_ACCESS', true);
     require_once __DIR__ . '/../config/config.php';
-    require_once __DIR__ . '/../config/database.php';
+    require_once 'database.php';
+require_once 'security.php';
+require_once 'cache.php';
+require_once 'monitoring.php';
+require_once 'security_enhanced.php';
+
+// Error reporting based on environment
 }
 
 // Start session with security
@@ -683,4 +689,92 @@ if (ENVIRONMENT === 'production') {
         exit;
     });
 }
+
+/**
+ * EMAIL FUNCTIONS
+ */
+
+/**
+ * Send email using PHPMailer with SMTP configuration
+ */
+function sendEmail($to, $subject, $body, $recipientName = '', $isHTML = true) {
+    // Check if we're in a test environment
+    if (defined('TESTING_MODE') && TESTING_MODE) {
+        error_log("Test Mode: Email to $to - Subject: $subject");
+        return true;
+    }
+    
+    try {
+        // Use simple mail() function as fallback if PHPMailer not available
+        if (!class_exists('PHPMailer\PHPMailer\PHPMailer')) {
+            $headers = [
+                'From: ' . SITE_EMAIL,
+                'Reply-To: ' . SITE_EMAIL,
+                'X-Mailer: Buffalo Marathon System',
+                'MIME-Version: 1.0'
+            ];
+            
+            if ($isHTML) {
+                $headers[] = 'Content-type: text/html; charset=UTF-8';
+            } else {
+                $headers[] = 'Content-type: text/plain; charset=UTF-8';
+            }
+            
+            return mail($to, $subject, $body, implode("\r\n", $headers));
+        }
+        
+        // Use PHPMailer if available (for production)
+        if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+            require_once __DIR__ . '/../vendor/autoload.php';
+            
+            $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+            
+            // Server settings
+            $mail->isSMTP();
+            $mail->Host = SMTP_HOST;
+            $mail->SMTPAuth = true;
+            $mail->Username = SMTP_USERNAME;
+            $mail->Password = SMTP_PASSWORD;
+            $mail->SMTPSecure = SMTP_ENCRYPTION;
+            $mail->Port = SMTP_PORT;
+            
+            // Recipients
+            $mail->setFrom(SITE_EMAIL, SITE_NAME);
+            $mail->addAddress($to, $recipientName);
+            $mail->addReplyTo(SITE_EMAIL, SITE_NAME);
+            
+            // Content
+            $mail->isHTML($isHTML);
+            $mail->Subject = $subject;
+            $mail->Body = $body;
+            
+            if ($isHTML) {
+                $mail->AltBody = strip_tags($body);
+            }
+            
+            return $mail->send();
+        } else {
+            // Fallback to basic mail function
+            $headers = [
+                'From: ' . SITE_EMAIL,
+                'Reply-To: ' . SITE_EMAIL,
+                'X-Mailer: Buffalo Marathon System',
+                'MIME-Version: 1.0'
+            ];
+            
+            if ($isHTML) {
+                $headers[] = 'Content-type: text/html; charset=UTF-8';
+            } else {
+                $headers[] = 'Content-type: text/plain; charset=UTF-8';
+            }
+            
+            return mail($to, $subject, $body, implode("\r\n", $headers));
+        }
+        
+    } catch (Exception $e) {
+        error_log("Email sending failed: " . $e->getMessage());
+        return false;
+    }
+}
 ?>
+```
