@@ -40,7 +40,7 @@
     <link href="<?php echo str_contains($_SERVER['REQUEST_URI'], '/admin/') ? '../' : ''; ?>assets/css/style.css?v=1.0.0" rel="stylesheet">
     
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
+    <meta name="csrf-token" content="<?php echo function_exists('generateCSRFToken') ? generateCSRFToken() : ''; ?>">
 </head>
 <body>
     <!-- Skip to main content for accessibility -->
@@ -88,8 +88,8 @@
                     </li>
                     
                     <!-- User-only links -->
-                    <?php if (isLoggedIn()): ?>
-                        <?php if (isRegistrationOpen()): ?>
+                    <?php if (function_exists('isLoggedIn') && isLoggedIn()): ?>
+                        <?php if (function_exists('isRegistrationOpen') && isRegistrationOpen()): ?>
                         <li class="nav-item">
                             <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'register-marathon.php' ? 'active' : ''; ?>" 
                                href="register-marathon.php">
@@ -107,9 +107,9 @@
                 </ul>
                 
                 <ul class="navbar-nav">
-                    <?php if (isLoggedIn()): ?>
+                    <?php if (function_exists('isLoggedIn') && isLoggedIn()): ?>
                         <!-- Admin link for admins only -->
-                        <?php if (isAdmin()): ?>
+                        <?php if (function_exists('isAdmin') && isAdmin()): ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="admin/dashboard.php">
                                     <i class="fas fa-cog me-1"></i>Admin
@@ -138,10 +138,14 @@
                                 <!-- Check if user has registration -->
                                 <?php
                                 $user_registration = null;
-                                if (isLoggedIn()) {
-                                    $stmt = getDB()->prepare("SELECT id FROM registrations WHERE user_id = ? AND payment_status != 'cancelled' LIMIT 1");
-                                    $stmt->execute([$_SESSION['user_id']]);
-                                    $user_registration = $stmt->fetch();
+                                if (function_exists('isLoggedIn') && isLoggedIn() && function_exists('getDB') && isset($_SESSION['user_id'])) {
+                                    try {
+                                        $stmt = getDB()->prepare("SELECT id FROM registrations WHERE user_id = ? AND payment_status != 'cancelled' LIMIT 1");
+                                        $stmt->execute([$_SESSION['user_id']]);
+                                        $user_registration = $stmt->fetch();
+                                    } catch (Exception $e) {
+                                        $user_registration = null;
+                                    }
                                 }
                                 ?>
                                 
@@ -149,14 +153,14 @@
                                     <li><a class="dropdown-item" href="my-registration.php">
                                         <i class="fas fa-running me-2"></i>My Registration
                                     </a></li>
-                                <?php elseif (isRegistrationOpen()): ?>
+                                <?php elseif (function_exists('isRegistrationOpen') && isRegistrationOpen()): ?>
                                     <li><a class="dropdown-item text-success" href="register-marathon.php">
                                         <i class="fas fa-plus-circle me-2"></i>Register for Marathon
                                     </a></li>
                                 <?php endif; ?>
                                 
                                 <!-- Admin menu for admins -->
-                                <?php if (isAdmin()): ?>
+                                <?php if (function_exists('isAdmin') && isAdmin()): ?>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><h6 class="dropdown-header text-army-green">
                                         <i class="fas fa-cog me-2"></i>Administration
@@ -245,28 +249,28 @@
     </nav>
     
     <!-- Flash Messages -->
-    <?php if ($success_msg = getFlash('success')): ?>
+    <?php if (function_exists('getFlash') && ($success_msg = getFlash('success'))): ?>
         <div class="alert alert-success alert-dismissible fade show flash-message" role="alert">
             <i class="fas fa-check-circle me-2"></i><?php echo $success_msg; ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
     
-    <?php if ($error_msg = getFlash('error')): ?>
+    <?php if (function_exists('getFlash') && ($error_msg = getFlash('error'))): ?>
         <div class="alert alert-danger alert-dismissible fade show flash-message" role="alert">
             <i class="fas fa-exclamation-triangle me-2"></i><?php echo $error_msg; ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
     
-    <?php if ($info_msg = getFlash('info')): ?>
+    <?php if (function_exists('getFlash') && ($info_msg = getFlash('info'))): ?>
         <div class="alert alert-info alert-dismissible fade show flash-message" role="alert">
             <i class="fas fa-info-circle me-2"></i><?php echo $info_msg; ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
     
-    <?php if ($warning_msg = getFlash('warning')): ?>
+    <?php if (function_exists('getFlash') && ($warning_msg = getFlash('warning'))): ?>
         <div class="alert alert-warning alert-dismissible fade show flash-message" role="alert">
             <i class="fas fa-exclamation-triangle me-2"></i><?php echo $warning_msg; ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -274,17 +278,17 @@
     <?php endif; ?>
     
     <!-- Current Marathon Status Banner (for admins and during critical periods) -->
-    <?php if (isLoggedIn()): ?>
+    <?php if (function_exists('isLoggedIn') && isLoggedIn()): ?>
         <?php 
-        $marathon_status = getMarathonStatus();
-        $days_until_deadline = getDaysUntilDeadline();
-        $days_until_marathon = getDaysUntilMarathon();
+        $marathon_status = function_exists('getMarathonStatus') ? getMarathonStatus() : 'registration_open';
+        $days_until_deadline = function_exists('getDaysUntilDeadline') ? getDaysUntilDeadline() : (defined('DAYS_UNTIL_DEADLINE') ? DAYS_UNTIL_DEADLINE : 49);
+        $days_until_marathon = function_exists('getDaysUntilMarathon') ? getDaysUntilMarathon() : (defined('DAYS_UNTIL_MARATHON') ? DAYS_UNTIL_MARATHON : 60);
         ?>
         
         <?php if ($marathon_status === 'registration_open' && $days_until_deadline <= 7): ?>
             <div class="alert alert-warning alert-dismissible fade show mb-0 text-center" role="alert">
                 <strong><i class="fas fa-clock me-2"></i>Registration closes in <?php echo $days_until_deadline; ?> days!</strong>
-                <?php if (!isLoggedIn()): ?>
+                <?php if (!(function_exists('isLoggedIn') && isLoggedIn())): ?>
                     <a href="register.php" class="btn btn-sm btn-outline-dark ms-2">Sign Up Now</a>
                 <?php endif; ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>

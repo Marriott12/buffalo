@@ -1,28 +1,85 @@
 <?php
 /**
  * Buffalo Marathon 2025 - Homepage
- * Production Ready - Updated: 2025-08-12
+ * Production Ready - Updated: 2025-08-13
  */
 
 define('BUFFALO_SECURE_ACCESS', true);
-require_once 'includes/functions.php';
+
+// Error handling for production
+if (!defined('ENVIRONMENT') || ENVIRONMENT === 'production') {
+    error_reporting(0);
+    ini_set('display_errors', 0);
+}
+
+try {
+    require_once 'includes/functions.php';
+} catch (Exception $e) {
+    error_log("Failed to load functions: " . $e->getMessage());
+    // Fallback - load minimal requirements
+    require_once 'config/config.php';
+    if (file_exists('includes/database.php')) {
+        require_once 'includes/database.php';
+    }
+}
 
 $page_title = 'Buffalo Marathon 2025 - October 11, 2025';
 $page_description = 'Join Buffalo Marathon 2025 at Buffalo Park Recreation Centre. Multiple race categories, amazing prizes, and unforgettable experience. Register now!';
 
-// Get current statistics
-$stats = getDBStats();
-$days_until_marathon = getDaysUntilMarathon();
-$days_until_deadline = getDaysUntilDeadline();
-$days_until_early_bird = getDaysUntilEarlyBird();
-$registration_open = isRegistrationOpen();
-$early_bird_active = isEarlyBirdActive();
-$marathon_status = getMarathonStatus();
+// Initialize default values
+$stats = ['total_registrations' => 0, 'confirmed_payments' => 0, 'pending_payments' => 0, 'total_users' => 0, 'active_categories' => 0];
+$days_until_marathon = DAYS_UNTIL_MARATHON ?? 60;
+$days_until_deadline = DAYS_UNTIL_DEADLINE ?? 49;
+$days_until_early_bird = DAYS_UNTIL_EARLY_BIRD ?? 19;
+$registration_open = true;
+$early_bird_active = (time() < strtotime(EARLY_BIRD_DEADLINE));
+$marathon_status = 'open';
+$categories = [];
+$announcements = [];
+
+// Try to get real data if database is available
+try {
+    if (function_exists('getDBStats')) {
+        $stats = getDBStats();
+    }
+    if (function_exists('getDaysUntilMarathon')) {
+        $days_until_marathon = getDaysUntilMarathon();
+    }
+    if (function_exists('getDaysUntilDeadline')) {
+        $days_until_deadline = getDaysUntilDeadline();
+    }
+    if (function_exists('getDaysUntilEarlyBird')) {
+        $days_until_early_bird = getDaysUntilEarlyBird();
+    }
+    if (function_exists('isRegistrationOpen')) {
+        $registration_open = isRegistrationOpen();
+    }
+    if (function_exists('isEarlyBirdActive')) {
+        $early_bird_active = isEarlyBirdActive();
+    }
+    if (function_exists('getMarathonStatus')) {
+        $marathon_status = getMarathonStatus();
+    }
+} catch (Exception $e) {
+    error_log("Error getting stats: " . $e->getMessage());
+}
 
 // Get categories for display
 try {
-    // Use cached categories for better performance
-    $categories = CacheManager::getCachedCategories();
+    if (class_exists('CacheManager')) {
+        $categories = CacheManager::getCachedCategories();
+    } elseif (isset($db) && $db instanceof PDO) {
+        $stmt = $db->query("SELECT * FROM categories WHERE is_active = 1 ORDER BY price ASC");
+        $categories = $stmt->fetchAll();
+    } else {
+        // Fallback static categories
+        $categories = [
+            ['id' => 1, 'name' => 'Full Marathon (42.2km)', 'distance' => '42.2km', 'price' => 150.00, 'early_bird_price' => 120.00],
+            ['id' => 2, 'name' => 'Half Marathon (21.1km)', 'distance' => '21.1km', 'price' => 100.00, 'early_bird_price' => 80.00],
+            ['id' => 3, 'name' => '10K Run', 'distance' => '10km', 'price' => 50.00, 'early_bird_price' => 40.00],
+            ['id' => 4, 'name' => '5K Fun Run', 'distance' => '5km', 'price' => 30.00, 'early_bird_price' => 25.00]
+        ];
+    }
 } catch (Exception $e) {
     $categories = [];
     error_log("Error fetching categories: " . $e->getMessage());
@@ -30,14 +87,16 @@ try {
 
 // Get recent announcements
 try {
-    $stmt = $db->query("
-        SELECT title, content, type, created_at 
-        FROM announcements 
-        WHERE is_active = 1 AND target_audience IN ('all', 'unregistered') 
-        ORDER BY created_at DESC 
-        LIMIT 3
-    ");
-    $announcements = $stmt->fetchAll();
+    if (isset($db) && $db instanceof PDO) {
+        $stmt = $db->query("
+            SELECT title, content, type, created_at 
+            FROM announcements 
+            WHERE is_active = 1 AND target_audience IN ('all', 'unregistered') 
+            ORDER BY created_at DESC 
+            LIMIT 3
+        ");
+        $announcements = $stmt->fetchAll();
+    }
 } catch (Exception $e) {
     $announcements = [];
 }

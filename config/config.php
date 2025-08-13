@@ -31,9 +31,9 @@ define('CONTACT_PHONES_ALL', '+260 972 545 658 / +260 770 809 062 / +260 771 470
 
 // Database Configuration - Production Ready
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'envithcy_marathon');
-define('DB_USER', 'envithcy_buffalo');
-define('DB_PASS', 'buffalo-marathon2025');
+define('DB_NAME', 'buffalo_marathon');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
 
 // Event Configuration
