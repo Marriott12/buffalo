@@ -89,8 +89,8 @@ define('ZAMTEL_ENABLED', true);
 define('ZAMTEL_SHORTCODE', '155');
 
 // Environment Settings
-define('ENVIRONMENT', 'production'); // production, staging, development
-define('DEBUG_MODE', false); // SET TO FALSE FOR PRODUCTION
+define('ENVIRONMENT', 'development'); // production, staging, development
+define('DEBUG_MODE', true); // SET TO FALSE FOR PRODUCTION
 define('LOG_ERRORS', true);
 define('MAINTENANCE_MODE', false);
 
@@ -112,7 +112,7 @@ define('CACHE_LIFETIME', 3600); // 1 hour
 date_default_timezone_set('Africa/Lusaka');
 setlocale(LC_TIME, 'en_US.UTF-8');
 
-// Error Reporting (Production Settings)
+// Error Reporting (Development Settings for Local)
 if (ENVIRONMENT === 'production') {
     error_reporting(0);
     ini_set('display_errors', 0);
@@ -121,6 +121,8 @@ if (ENVIRONMENT === 'production') {
 } else {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
+    ini_set('log_errors', 1);
+    ini_set('error_log', __DIR__ . '/../logs/php_errors.log');
 }
 
 // Session Configuration

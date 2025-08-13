@@ -11,9 +11,9 @@ if (!defined('BUFFALO_SECURE_ACCESS')) {
 
 /**
  * Get database connection
- * @return PDO Database connection
+ * @return PDO|null Database connection
  */
-function getDatabase(): PDO {
+function getDatabaseConnection2() {
     static $db = null;
     
     if ($db === null) {

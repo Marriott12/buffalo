@@ -11,6 +11,18 @@ if (!defined('BUFFALO_SECURE_ACCESS')) {
 
 // Include functions for email functionality
 require_once __DIR__ . '/functions.php';
+// Ensure sendEmail function exists, or define a fallback
+if (!function_exists('sendEmail')) {
+    /**
+     * Basic sendEmail fallback if not defined in functions.php
+     */
+    function sendEmail($to, $subject, $message, $recipientName = '') {
+        $headers = "From: Buffalo Marathon <noreply@buffalomarathon.com>\r\n";
+        $headers .= "Reply-To: noreply@buffalomarathon.com\r\n";
+        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        mail($to, $subject, $message, $headers);
+    }
+}
 
 class PaymentManager {
     private $db;
