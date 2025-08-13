@@ -243,7 +243,7 @@ $days_until_deadline = getDaysUntilDeadline();
                 <div class="d-flex justify-content-between align-items-center py-3 px-4 bg-white shadow-sm">
                     <div>
                         <h4 class="text-army-green fw-bold mb-0">Admin Dashboard</h4>
-                        <small class="text-muted">Welcome back, <?php echo htmlspecialchars($_SESSION['user_email']); ?></small>
+                        <small class="text-muted">Welcome back, <?php echo htmlspecialchars(getCurrentUserEmail() ?: 'Admin'); ?></small>
                     </div>
                     <div class="text-end">
                         <div class="text-army-green fw-bold"><?php echo $days_until_marathon; ?> Days Until Marathon</div>

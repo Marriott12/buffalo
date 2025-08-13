@@ -115,6 +115,104 @@ function getCurrentUser() {
     }
 }
 
+function getCurrentUserEmail() {
+    if (!isLoggedIn()) {
+        return '';
+    }
+    
+    // Check if email is already in session
+    if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+        return $_SESSION['user_email'];
+    }
+    
+    // Get user data from database
+    $user = getCurrentUser();
+    if ($user && isset($user['email'])) {
+        // Store in session for future use
+        $_SESSION['user_email'] = $user['email'];
+        return $user['email'];
+    }
+    
+    return '';
+}
+
+function loginUser($user_id, $email, $role = 'user', $first_name = '') {
+    startSecureSession();
+    
+    // Regenerate session ID for security
+    session_regenerate_id(true);
+    
+    // Set session variables
+    $_SESSION['user_id'] = $user_id;
+    $_SESSION['user_email'] = $email;
+    $_SESSION['user_role'] = $role;
+    $_SESSION['user_first_name'] = $first_name;
+    $_SESSION['login_time'] = time();
+    
+    // Log the successful login (fallback if logActivity doesn't exist)
+    if (function_exists('logActivity')) {
+        logActivity('user_login', "User logged in: {$email}", $user_id);
+    } else {
+        error_log("User login: {$email} (ID: {$user_id})");
+    }
+    
+    return true;
+}
+
+function logActivity($action, $details = '', $user_id = null) {
+    try {
+        $pdo = getDatabaseConnection();
+        if (!$pdo) {
+            error_log("Activity Log: {$action} - {$details}");
+            return false;
+        }
+        
+        $user_id = $user_id ?: ($_SESSION['user_id'] ?? null);
+        $ip_address = getRealIpAddress();
+        
+        $stmt = $pdo->prepare("INSERT INTO activity_logs (user_id, action, details, ip_address, created_at) VALUES (?, ?, ?, ?, NOW())");
+        return $stmt->execute([$user_id, $action, $details, $ip_address]);
+        
+    } catch (Exception $e) {
+        error_log("Activity Log Error: " . $e->getMessage());
+        error_log("Activity Log: {$action} - {$details}");
+        return false;
+    }
+}
+
+function getRealIpAddress() {
+    // Check for various headers that might contain the real IP
+    $ip_headers = [
+        'HTTP_CF_CONNECTING_IP',     // Cloudflare
+        'HTTP_CLIENT_IP',            // Proxy
+        'HTTP_X_FORWARDED_FOR',      // Load balancer/proxy
+        'HTTP_X_FORWARDED',          // Proxy
+        'HTTP_X_CLUSTER_CLIENT_IP',  // Cluster
+        'HTTP_FORWARDED_FOR',        // Proxy
+        'HTTP_FORWARDED',            // Proxy
+        'REMOTE_ADDR'                // Standard
+    ];
+    
+    foreach ($ip_headers as $header) {
+        if (!empty($_SERVER[$header])) {
+            $ip = $_SERVER[$header];
+            
+            // Handle comma-separated IPs (X-Forwarded-For can contain multiple IPs)
+            if (strpos($ip, ',') !== false) {
+                $ip = trim(explode(',', $ip)[0]);
+            }
+            
+            // Validate IP address
+            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                return $ip;
+            }
+        }
+    }
+    
+    // Fallback to REMOTE_ADDR (even if it's private/reserved)
+    return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+}
+
 function logout() {
     startSecureSession();
     $_SESSION = array();
