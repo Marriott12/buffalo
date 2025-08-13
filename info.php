@@ -19,6 +19,12 @@ include 'includes/header.php';
 ?>
     
     <style>
+        :root {
+            --army-green: #4B5320;
+            --army-green-dark: #222B1F;
+            --gold: #FFD700;
+        }
+        
         .info-header {
             background: linear-gradient(135deg, var(--army-green), var(--army-green-dark));
             color: white;
