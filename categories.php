@@ -12,12 +12,16 @@ $categories = [];
 try {
     $db = getDB();
     $stmt = $db->query("
-        SELECT c.*, 
+        SELECT c.id, c.name, c.distance, c.description, c.price, c.early_bird_price, 
+               c.max_participants, c.min_age, c.max_age, c.start_time, c.sort_order, 
+               c.is_active, c.created_at, c.updated_at,
                COUNT(r.id) as registration_count
         FROM categories c
         LEFT JOIN registrations r ON c.id = r.category_id AND r.payment_status != 'cancelled'
         WHERE c.is_active = 1
-        GROUP BY c.id
+        GROUP BY c.id, c.name, c.distance, c.description, c.price, c.early_bird_price, 
+                 c.max_participants, c.min_age, c.max_age, c.start_time, c.sort_order, 
+                 c.is_active, c.created_at, c.updated_at
         ORDER BY FIELD(c.name, 'Full Marathon', 'Half Marathon', 'Power Challenge', 'Family Fun Run', 'VIP Run', 'Kid Run')
     ");
     $categories = $stmt->fetchAll();
@@ -304,31 +308,37 @@ include 'includes/header.php';
                                 <div class="mb-3">
                                     <small class="text-muted">
                                         <i class="fas fa-users me-1"></i>
-                                        Age Requirement: <?php echo $category['min_age']; ?>-<?php echo $category['max_age']; ?> years
+                                        Age Requirement: 
+                                        <?php 
+                                        $min_age = $category['min_age'] ?? 5;
+                                        $max_age = $category['max_age'] ?? 100;
+                                        echo $min_age . '-' . $max_age; 
+                                        ?> years
                                     </small>
                                 </div>
                                 
                                 <!-- Availability -->
-                                <?php if ($category['max_participants'] > 0): ?>
+                                <?php $max_participants = $category['max_participants'] ?? 0; ?>
+                                <?php if ($max_participants > 0): ?>
                                     <div class="mb-4">
                                         <div class="d-flex justify-content-between mb-2">
                                             <small class="text-muted">Availability</small>
                                             <small class="text-muted">
-                                                <?php echo $category['registration_count']; ?>/<?php echo $category['max_participants']; ?>
+                                                <?php echo $category['registration_count']; ?>/<?php echo $max_participants; ?>
                                             </small>
                                         </div>
                                         <div class="availability-bar">
                                             <div class="availability-fill" 
-                                                 style="width: <?php echo min(($category['registration_count'] / $category['max_participants']) * 100, 100); ?>%"></div>
+                                                 style="width: <?php echo min(($category['registration_count'] / $max_participants) * 100, 100); ?>%"></div>
                                         </div>
-                                        <?php if ($category['registration_count'] >= $category['max_participants']): ?>
+                                        <?php if ($category['registration_count'] >= $max_participants): ?>
                                             <small class="text-danger mt-1 d-block"><i class="fas fa-exclamation-triangle me-1"></i>Fully Booked</small>
                                         <?php endif; ?>
                                     </div>
                                 <?php endif; ?>
                                 
                                 <!-- Registration Button -->
-                                <?php if ($registration_open && ($category['max_participants'] == 0 || $category['registration_count'] < $category['max_participants'])): ?>
+                                <?php if ($registration_open && ($max_participants == 0 || $category['registration_count'] < $max_participants)): ?>
                                     <?php if (isLoggedIn()): ?>
                                         <a href="/register-marathon.php?category=<?php echo $category['id']; ?>" 
                                            class="btn btn-army-green w-100">
@@ -386,9 +396,9 @@ include 'includes/header.php';
                                 </td>
                                 <td><?php echo htmlspecialchars($category['distance']); ?></td>
                                 <td><strong><?php echo formatCurrency($category['price']); ?></strong></td>
-                                <td><?php echo $category['min_age']; ?>-<?php echo $category['max_age']; ?> years</td>
+                                <td><?php echo ($category['min_age'] ?? 5) . '-' . ($category['max_age'] ?? 100); ?> years</td>
                                 <td>
-                                    <?php echo $category['max_participants'] > 0 ? $category['max_participants'] : 'Unlimited'; ?>
+                                    <?php echo ($category['max_participants'] ?? 0) > 0 ? ($category['max_participants'] ?? 0) : 'Unlimited'; ?>
                                 </td>
                                 <td>
                                     <span class="badge bg-army-green"><?php echo $category['registration_count']; ?></span>
@@ -396,7 +406,7 @@ include 'includes/header.php';
                                 <td>
                                     <?php if (!$registration_open): ?>
                                         <span class="badge bg-secondary">Closed</span>
-                                    <?php elseif ($category['max_participants'] > 0 && $category['registration_count'] >= $category['max_participants']): ?>
+                                    <?php elseif (($category['max_participants'] ?? 0) > 0 && $category['registration_count'] >= ($category['max_participants'] ?? 0)): ?>
                                         <span class="badge bg-danger">Full</span>
                                     <?php else: ?>
                                         <span class="badge bg-success">Available</span>

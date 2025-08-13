@@ -819,4 +819,13 @@ function formatDateTime($datetime, $format = 'M j, Y g:i A') {
 function formatTime($time, $format = 'g:i A') {
     return formatDateTime($time, $format);
 }
+
+// Array helper functions
+function getArrayValue($array, $key, $default = null) {
+    return isset($array[$key]) ? $array[$key] : $default;
+}
+
+function safeArrayGet($array, $key, $default = '') {
+    return $array[$key] ?? $default;
+}
 ?>

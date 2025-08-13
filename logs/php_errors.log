@@ -931,3 +931,274 @@ Stack trace:
 #0 C:\wamp64\www\buffalo-marathon\login.php(377): include()
 #1 {main}
   thrown in C:\wamp64\www\buffalo-marathon\includes\footer.php on line 91
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP Warning:  Undefined array key "price" in C:\wamp64\www\buffalo-marathon\categories.php on line 284
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\wamp64\www\buffalo-marathon\includes\functions.php on line 492
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP   2. formatCurrency($amount = NULL, $currency = *uninitialized*) C:\wamp64\www\buffalo-marathon\categories.php:284
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP   3. number_format($num = NULL, $decimals = 2) C:\wamp64\www\buffalo-marathon\includes\functions.php:492
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP Warning:  Undefined array key "min_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 307
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP Warning:  Undefined array key "max_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 307
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 312
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:13:59 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 331
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "price" in C:\wamp64\www\buffalo-marathon\categories.php on line 284
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\wamp64\www\buffalo-marathon\includes\functions.php on line 492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   2. formatCurrency($amount = NULL, $currency = *uninitialized*) C:\wamp64\www\buffalo-marathon\categories.php:284
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   3. number_format($num = NULL, $decimals = 2) C:\wamp64\www\buffalo-marathon\includes\functions.php:492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "min_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 307
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 307
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 312
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 331
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "price" in C:\wamp64\www\buffalo-marathon\categories.php on line 284
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\wamp64\www\buffalo-marathon\includes\functions.php on line 492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   2. formatCurrency($amount = NULL, $currency = *uninitialized*) C:\wamp64\www\buffalo-marathon\categories.php:284
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   3. number_format($num = NULL, $decimals = 2) C:\wamp64\www\buffalo-marathon\includes\functions.php:492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "min_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 307
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 307
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 312
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 331
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "price" in C:\wamp64\www\buffalo-marathon\categories.php on line 284
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\wamp64\www\buffalo-marathon\includes\functions.php on line 492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   2. formatCurrency($amount = NULL, $currency = *uninitialized*) C:\wamp64\www\buffalo-marathon\categories.php:284
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   3. number_format($num = NULL, $decimals = 2) C:\wamp64\www\buffalo-marathon\includes\functions.php:492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "min_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 307
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 307
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 312
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 331
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "price" in C:\wamp64\www\buffalo-marathon\categories.php on line 284
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\wamp64\www\buffalo-marathon\includes\functions.php on line 492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   2. formatCurrency($amount = NULL, $currency = *uninitialized*) C:\wamp64\www\buffalo-marathon\categories.php:284
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   3. number_format($num = NULL, $decimals = 2) C:\wamp64\www\buffalo-marathon\includes\functions.php:492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "min_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 307
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 307
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 312
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 331
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "price" in C:\wamp64\www\buffalo-marathon\categories.php on line 284
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\wamp64\www\buffalo-marathon\includes\functions.php on line 492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   2. formatCurrency($amount = NULL, $currency = *uninitialized*) C:\wamp64\www\buffalo-marathon\categories.php:284
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   3. number_format($num = NULL, $decimals = 2) C:\wamp64\www\buffalo-marathon\includes\functions.php:492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "min_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 307
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 307
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 312
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 331
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "price" in C:\wamp64\www\buffalo-marathon\categories.php on line 388
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\wamp64\www\buffalo-marathon\includes\functions.php on line 492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   2. formatCurrency($amount = NULL, $currency = *uninitialized*) C:\wamp64\www\buffalo-marathon\categories.php:388
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   3. number_format($num = NULL, $decimals = 2) C:\wamp64\www\buffalo-marathon\includes\functions.php:492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "min_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 389
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 389
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 391
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 399
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "price" in C:\wamp64\www\buffalo-marathon\categories.php on line 388
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\wamp64\www\buffalo-marathon\includes\functions.php on line 492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   2. formatCurrency($amount = NULL, $currency = *uninitialized*) C:\wamp64\www\buffalo-marathon\categories.php:388
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   3. number_format($num = NULL, $decimals = 2) C:\wamp64\www\buffalo-marathon\includes\functions.php:492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "min_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 389
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 389
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 391
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 399
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "price" in C:\wamp64\www\buffalo-marathon\categories.php on line 388
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\wamp64\www\buffalo-marathon\includes\functions.php on line 492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   2. formatCurrency($amount = NULL, $currency = *uninitialized*) C:\wamp64\www\buffalo-marathon\categories.php:388
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   3. number_format($num = NULL, $decimals = 2) C:\wamp64\www\buffalo-marathon\includes\functions.php:492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "min_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 389
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 389
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 391
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 399
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "price" in C:\wamp64\www\buffalo-marathon\categories.php on line 388
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\wamp64\www\buffalo-marathon\includes\functions.php on line 492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   2. formatCurrency($amount = NULL, $currency = *uninitialized*) C:\wamp64\www\buffalo-marathon\categories.php:388
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   3. number_format($num = NULL, $decimals = 2) C:\wamp64\www\buffalo-marathon\includes\functions.php:492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "min_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 389
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 389
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 391
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 399
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "price" in C:\wamp64\www\buffalo-marathon\categories.php on line 388
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\wamp64\www\buffalo-marathon\includes\functions.php on line 492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   2. formatCurrency($amount = NULL, $currency = *uninitialized*) C:\wamp64\www\buffalo-marathon\categories.php:388
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   3. number_format($num = NULL, $decimals = 2) C:\wamp64\www\buffalo-marathon\includes\functions.php:492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "min_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 389
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 389
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 391
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 399
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "price" in C:\wamp64\www\buffalo-marathon\categories.php on line 388
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\wamp64\www\buffalo-marathon\includes\functions.php on line 492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   2. formatCurrency($amount = NULL, $currency = *uninitialized*) C:\wamp64\www\buffalo-marathon\categories.php:388
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   3. number_format($num = NULL, $decimals = 2) C:\wamp64\www\buffalo-marathon\includes\functions.php:492
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "min_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 389
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_age" in C:\wamp64\www\buffalo-marathon\categories.php on line 389
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 391
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Warning:  Undefined array key "max_participants" in C:\wamp64\www\buffalo-marathon\categories.php on line 399
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Stack trace:
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP   1. {main}() C:\wamp64\www\buffalo-marathon\categories.php:0
+[13-Aug-2025 15:14:00 Africa/Lusaka] PHP Fatal error:  Uncaught Error: Call to undefined function getSetting() in C:\wamp64\www\buffalo-marathon\includes\footer.php:91
+Stack trace:
+#0 C:\wamp64\www\buffalo-marathon\categories.php(526): include()
+#1 {main}
+  thrown in C:\wamp64\www\buffalo-marathon\includes\footer.php on line 91
+[13-Aug-2025 15:14:28 Africa/Lusaka] Error getting registration stats: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'buffalo_marathon.payments' doesn't exist
+[13-Aug-2025 15:14:28 Africa/Lusaka] Error fetching categories: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'price' in 'order clause'
+[13-Aug-2025 15:14:28 Africa/Lusaka] Error fetching announcements: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'type' in 'field list'
+[13-Aug-2025 15:14:28 Africa/Lusaka] PHP Fatal error:  Uncaught Error: Call to undefined function getSetting() in C:\wamp64\www\buffalo-marathon\includes\footer.php:91
+Stack trace:
+#0 C:\wamp64\www\buffalo-marathon\index.php(421): include()
+#1 {main}
+  thrown in C:\wamp64\www\buffalo-marathon\includes\footer.php on line 91
+[13-Aug-2025 15:16:58 Africa/Lusaka] Categories fetch error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'c.price' in 'field list'
+[13-Aug-2025 15:16:58 Africa/Lusaka] PHP Fatal error:  Uncaught Error: Call to undefined function getSetting() in C:\wamp64\www\buffalo-marathon\includes\footer.php:91
+Stack trace:
+#0 C:\wamp64\www\buffalo-marathon\categories.php(536): include()
+#1 {main}
+  thrown in C:\wamp64\www\buffalo-marathon\includes\footer.php on line 91
+[13-Aug-2025 15:18:40 Africa/Lusaka] Categories fetch error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'c.price' in 'field list'
+[13-Aug-2025 15:18:40 Africa/Lusaka] PHP Fatal error:  Uncaught Error: Call to undefined function getSetting() in C:\wamp64\www\buffalo-marathon\includes\footer.php:91
+Stack trace:
+#0 C:\wamp64\www\buffalo-marathon\categories.php(536): include()
+#1 {main}
+  thrown in C:\wamp64\www\buffalo-marathon\includes\footer.php on line 91
+[13-Aug-2025 15:19:03 Africa/Lusaka] Error getting registration stats: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'buffalo_marathon.payments' doesn't exist
+[13-Aug-2025 15:19:03 Africa/Lusaka] PHP Fatal error:  Uncaught Error: Call to undefined function getSetting() in C:\wamp64\www\buffalo-marathon\includes\footer.php:91
+Stack trace:
+#0 C:\wamp64\www\buffalo-marathon\login.php(377): include()
+#1 {main}
+  thrown in C:\wamp64\www\buffalo-marathon\includes\footer.php on line 91

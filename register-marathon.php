@@ -432,21 +432,22 @@ $selected_category_id = $_GET['category'] ?? $form_data['category_id'] ?? null;
                                                 
                                                 <div class="text-center">
                                                     <small class="text-muted">
-                                                        Age: <?php echo $category['min_age']; ?>-<?php echo $category['max_age']; ?> years
+                                                        Age: <?php echo ($category['min_age'] ?? 5) . '-' . ($category['max_age'] ?? 100); ?> years
                                                     </small>
                                                 </div>
                                                 
-                                                <?php if ($category['max_participants'] > 0): ?>
+                                                <?php if (($category['max_participants'] ?? 0) > 0): ?>
                                                     <?php
                                                     $stmt = $db->prepare("SELECT COUNT(*) FROM registrations WHERE category_id = ? AND payment_status != 'cancelled'");
                                                     $stmt->execute([$category['id']]);
                                                     $current_count = $stmt->fetchColumn();
-                                                    $percentage = ($current_count / $category['max_participants']) * 100;
+                                                    $max_participants = $category['max_participants'] ?? 0;
+                                                    $percentage = $max_participants > 0 ? ($current_count / $max_participants) * 100 : 0;
                                                     ?>
                                                     <div class="mt-3">
                                                         <div class="d-flex justify-content-between mb-1">
                                                             <small>Availability</small>
-                                                            <small><?php echo $current_count; ?>/<?php echo $category['max_participants']; ?></small>
+                                                            <small><?php echo $current_count; ?>/<?php echo $max_participants; ?></small>
                                                         </div>
                                                         <div class="progress" style="height: 6px;">
                                                             <div class="progress-bar" style="width: <?php echo $percentage; ?>%; background-color: var(--army-green);"></div>
