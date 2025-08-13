@@ -75,6 +75,12 @@ function getDB() {
 // Session Management Functions
 function startSecureSession() {
     if (session_status() === PHP_SESSION_NONE) {
+        // Check if headers have already been sent
+        if (headers_sent($file, $line)) {
+            error_log("Warning: Headers already sent in {$file} on line {$line}. Cannot start session.");
+            return false;
+        }
+        
         session_start();
         
         // Regenerate session ID periodically for security
@@ -85,10 +91,13 @@ function startSecureSession() {
             $_SESSION['last_regeneration'] = time();
         }
     }
+    return true;
 }
 
 function isLoggedIn() {
-    startSecureSession();
+    if (!startSecureSession()) {
+        return false; // If session can't be started, user is not logged in
+    }
     return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 }
 
@@ -134,6 +143,43 @@ function getCurrentUserEmail() {
     }
     
     return '';
+}
+
+// Safe versions of functions with null fallbacks
+function safeGetCurrentUserEmail() {
+    try {
+        return getCurrentUserEmail() ?? '';
+    } catch (Exception $e) {
+        error_log("Error getting user email: " . $e->getMessage());
+        return '';
+    }
+}
+
+function safeIsLoggedIn() {
+    try {
+        return isLoggedIn() ?? false;
+    } catch (Exception $e) {
+        error_log("Error checking login status: " . $e->getMessage());
+        return false;
+    }
+}
+
+function safeIsAdmin() {
+    try {
+        return isAdmin() ?? false;
+    } catch (Exception $e) {
+        error_log("Error checking admin status: " . $e->getMessage());
+        return false;
+    }
+}
+
+function safeGetSetting($key, $default = null) {
+    try {
+        return getSetting($key, $default) ?? $default;
+    } catch (Exception $e) {
+        error_log("Error getting setting '{$key}': " . $e->getMessage());
+        return $default;
+    }
 }
 
 function loginUser($user_id, $email, $role = 'user', $first_name = '') {

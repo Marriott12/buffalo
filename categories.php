@@ -27,6 +27,12 @@ try {
 
 $registration_open = isRegistrationOpen();
 $early_bird_active = isEarlyBirdActive();
+
+$page_title = 'Race Categories - Buffalo Marathon 2025';
+$page_description = 'Choose from 6 exciting race categories at Buffalo Marathon 2025. Full Marathon, Half Marathon, 10K, 5K, VIP Run, and Kids Race.';
+
+// Include header
+include 'includes/header.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -155,17 +155,13 @@ $faqs = [
         ]
     ]
 ];
+
+$page_title = 'FAQ - Buffalo Marathon 2025';
+$page_description = 'Frequently asked questions about Buffalo Marathon 2025. Get answers about registration, race day, categories, training, and more.';
+
+// Include header
+include 'includes/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ - Buffalo Marathon 2025</title>
-    <meta name="description" content="Frequently asked questions about Buffalo Marathon 2025. Get answers about registration, race day, categories, training, and more.">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     
     <style>
         :root {
@@ -249,63 +245,6 @@ $faqs = [
             border-radius: 0.25rem;
         }
     </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-army-green">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/">
-                <i class="fas fa-running me-2"></i>Buffalo Marathon 2025
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/categories.php">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/schedule.php">Schedule</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/info.php">Event Info</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/faq.php">FAQ</a>
-                    </li>
-                </ul>
-                
-                <ul class="navbar-nav">
-                    <?php if (isLoggedIn()): ?>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                <i class="fas fa-user me-1"></i><?php echo htmlspecialchars(getCurrentUserEmail() ?: 'User'); ?>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/dashboard.php">Dashboard</a></li>
-                                <li><a class="dropdown-item" href="/profile.php">Profile</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/logout.php">Logout</a></li>
-                            </ul>
-                        </li>
-                    <?php else: ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/login.php">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-outline-light ms-2 px-3" href="/register.php">Sign Up</a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
     <!-- Header -->
     <section class="faq-header">

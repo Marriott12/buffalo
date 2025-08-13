@@ -19,12 +19,6 @@ include 'includes/header.php';
 ?>
     
     <style>
-        :root {
-            --army-green: #4B5320;
-            --army-green-dark: #222B1F;
-            --gold: #FFD700;
-        }
-        
         .info-header {
             background: linear-gradient(135deg, var(--army-green), var(--army-green-dark));
             color: white;
@@ -106,63 +100,6 @@ include 'includes/header.php';
             margin-bottom: 1rem;
         }
     </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-army-green">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/">
-                <i class="fas fa-running me-2"></i>Buffalo Marathon 2025
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/categories.php">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/schedule.php">Schedule</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/info.php">Event Info</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/faq.php">FAQ</a>
-                    </li>
-                </ul>
-                
-                <ul class="navbar-nav">
-                    <?php if (isLoggedIn()): ?>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                <i class="fas fa-user me-1"></i><?php echo htmlspecialchars(getCurrentUserEmail() ?: 'User'); ?>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/dashboard.php">Dashboard</a></li>
-                                <li><a class="dropdown-item" href="/profile.php">Profile</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/logout.php">Logout</a></li>
-                            </ul>
-                        </li>
-                    <?php else: ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/login.php">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-outline-light ms-2 px-3" href="/register.php">Sign Up</a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
     <!-- Header -->
     <section class="info-header">
@@ -291,3 +228,70 @@ include 'includes/header.php';
                 </div>
                 
                 <div class="feature-item">
+                    <i class="fas fa-trophy"></i>
+                    <h5 class="fw-bold">Prizes & Awards</h5>
+                    <p class="text-muted mb-0">Amazing prizes for category winners and special recognition awards</p>
+                </div>
+                
+                <div class="feature-item">
+                    <i class="fas fa-first-aid"></i>
+                    <h5 class="fw-bold">Medical Support</h5>
+                    <p class="text-muted mb-0">Professional medical team and first aid stations throughout the course</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Details -->
+    <section class="py-5" id="location-details">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h2 class="display-6 fw-bold text-army-green mb-4">Venue Information</h2>
+                    
+                    <div class="highlight-box">
+                        <h4 class="text-army-green">📍 <?php echo EVENT_VENUE; ?></h4>
+                        <p class="mb-0">
+                            <strong>Address:</strong> <?php echo EVENT_ADDRESS; ?>, <?php echo EVENT_CITY; ?><br>
+                            <strong>GPS Coordinates:</strong> -15.4067, 28.2833<br>
+                            <strong>Parking:</strong> Ample free parking available
+                        </p>
+                    </div>
+                    
+                    <h4 class="text-army-green mt-4 mb-3">Getting There</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-car text-army-green me-2"></i><strong>By Car:</strong> Follow signs to Buffalo Park Recreation Centre</li>
+                        <li class="mb-2"><i class="fas fa-bus text-army-green me-2"></i><strong>Public Transport:</strong> Bus routes available to Buffalo Park area</li>
+                        <li class="mb-2"><i class="fas fa-walking text-army-green me-2"></i><strong>On Foot:</strong> Walking distance from nearby accommodations</li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="info-card">
+                        <h5 class="text-army-green mb-3">Quick Facts</h5>
+                        <div class="timeline-item">
+                            <h6>Race Day Registration</h6>
+                            <p class="mb-2">5:30 AM - 6:45 AM</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h6>Race Start</h6>
+                            <p class="mb-2">7:00 AM Sharp</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h6>Results Announcement</h6>
+                            <p class="mb-2">12:00 PM</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h6>Award Ceremony</h6>
+                            <p class="mb-0">1:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<?php
+// Include footer
+include 'includes/footer.php';
+?>
