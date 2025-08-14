@@ -1,6 +1,13 @@
 <?php
 /**
- * Buffalo Marathon 2025 - User Registration
+ * Buffalo Marat        $form_data = [
+            'first_name' => sanitizeInput($_POST['first_name'] ?? ''),
+            'last_name' => sanitizeInput($_POST['last_name'] ?? ''),
+            'email' => sanitizeInput($_POST['email'] ?? ''),
+            'phone' => sanitizeInput($_POST['phone'] ?? ''),
+            'password' => $_POST['password'] ?? '',
+            'confirm_password' => $_POST['confirm_password'] ?? ''
+        ];ser Registration
  * Production Ready - 2025-08-08 12:37:31 UTC
  */
 
@@ -54,26 +61,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Phone number is required.';
         }
         
-        if (empty($form_data['date_of_birth'])) {
-            $errors[] = 'Date of birth is required.';
-        }
-        
-        if (!in_array($form_data['gender'], ['male', 'female', 'other'])) {
-            $errors[] = 'Please select a valid gender.';
-        }
-        
-        if (strlen($form_data['password']) < PASSWORD_MIN_LENGTH) {
-            $errors[] = 'Password must be at least ' . PASSWORD_MIN_LENGTH . ' characters long.';
+        if (strlen($form_data['password']) < (defined('PASSWORD_MIN_LENGTH') ? PASSWORD_MIN_LENGTH : 8)) {
+            $errors[] = 'Password must be at least ' . (defined('PASSWORD_MIN_LENGTH') ? PASSWORD_MIN_LENGTH : 8) . ' characters long.';
         }
         
         if ($form_data['password'] !== $form_data['confirm_password']) {
             $errors[] = 'Passwords do not match.';
         }
         
-        // Check if email already exists
+        // Initialize database connection early
+        $db = null;
         if (empty($errors)) {
             try {
                 $db = getDB();
+            } catch (Exception $e) {
+                $errors[] = 'Database connection failed. Please try again later.';
+                error_log("Database connection error in registration: " . $e->getMessage());
+            }
+        }
+        
+        // Check if email already exists
+        if ($db && empty($errors)) {
+            try {
                 $stmt = $db->prepare("SELECT id FROM users WHERE email = ?");
                 $stmt->execute([$form_data['email']]);
                 
@@ -82,31 +91,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             } catch (Exception $e) {
                 $errors[] = 'Database error. Please try again.';
+                error_log("Email check error: " . $e->getMessage());
             }
         }
         
-        // Age validation
+                // Initialize database connection early
+        $db = null;
         if (empty($errors)) {
-            $birth_date = new DateTime($form_data['date_of_birth']);
-            $today = new DateTime();
-            $age = $today->diff($birth_date)->y;
-            
-            if ($age < 5) {
-                $errors[] = 'You must be at least 5 years old to register.';
-            }
-        }
         
         // Create account
-        if (empty($errors)) {
+        if ($db && empty($errors)) {
             try {
-                $hashed_password = hashPassword($form_data['password']);
+                $hashed_password = password_hash($form_data['password'], PASSWORD_DEFAULT);
                 
+                // Insert only the columns that actually exist in the database
                 $stmt = $db->prepare("
                     INSERT INTO users (
-                        email, password, first_name, last_name, phone, 
-                        date_of_birth, gender, emergency_contact_name, 
-                        emergency_contact_phone, created_at
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                        email, password, first_name, last_name, phone, created_at
+                    ) VALUES (?, ?, ?, ?, ?, NOW())
                 ");
                 
                 $stmt->execute([
@@ -114,23 +116,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $hashed_password,
                     $form_data['first_name'],
                     $form_data['last_name'],
-                    $form_data['phone'],
-                    $form_data['date_of_birth'],
-                    $form_data['gender'],
-                    $form_data['emergency_contact_name'],
-                    $form_data['emergency_contact_phone']
+                    $form_data['phone']
                 ]);
                 
                 $user_id = $db->lastInsertId();
                 
                 // Log activity
-                logActivity('user_registration', "New user registered: {$form_data['email']}", $user_id);
+                try {
+                    logActivity('user_registration', "New user registered: {$form_data['email']}", $user_id);
+                } catch (Exception $e) {
+                    error_log("Failed to log registration activity: " . $e->getMessage());
+                }
                 
-                // Send welcome email
-                sendWelcomeEmail($form_data['email'], $form_data['first_name']);
+                // TODO: Implement welcome email functionality
+                // sendWelcomeEmail($form_data['email'], $form_data['first_name']);
+                error_log("Welcome email would be sent to: " . $form_data['email']);
                 
                 // Auto-login user
-                loginUser($user_id, $form_data['email'], 'user');
+                loginUser($user_id, $form_data['email'], 'user', $form_data['first_name'], $form_data['last_name']);
                 
                 setFlashMessage('success', 'Account created successfully! Welcome to Buffalo Marathon 2025.');
                 
@@ -143,8 +146,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 redirectTo($redirect);
                 
             } catch (Exception $e) {
-                $errors[] = 'Failed to create account. Please try again.';
-                error_log("Registration error: " . $e->getMessage());
+                // More specific error handling
+                $error_message = $e->getMessage();
+                $error_code = $e->getCode();
+                
+                if (strpos($error_message, 'email') !== false || strpos($error_message, 'users_email_unique') !== false || $error_code == 23000) {
+                    $errors[] = 'An account with this email address already exists. Please use a different email or try logging in.';
+                } elseif (strpos($error_message, 'phone') !== false) {
+                    $errors[] = 'This phone number is already registered. Please use a different phone number.';
+                } elseif (strpos($error_message, 'connection') !== false || strpos($error_message, 'server') !== false) {
+                    $errors[] = 'Database connection error. Please try again in a few moments.';
+                } else {
+                    $errors[] = 'Failed to create account. Please check your information and try again.';
+                }
+                
+                error_log("Registration error: " . $e->getMessage() . " (Code: " . $e->getCode() . ") | User: " . ($form_data['email'] ?? 'unknown'));
             }
         }
     }
@@ -323,40 +339,6 @@ include 'includes/header.php';
                                     </div>
                                 </div>
                                 
-                                <div class="row g-3 mt-2">
-                                    <div class="col-md-6">
-                                        <label for="date_of_birth" class="form-label">Date of Birth <span class="text-danger">*</span></label>
-                                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" 
-                                               value="<?php echo htmlspecialchars($form_data['date_of_birth'] ?? ''); ?>" 
-                                               max="<?php echo date('Y-m-d'); ?>" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
-                                        <select class="form-select" id="gender" name="gender" required>
-                                            <option value="">Select Gender</option>
-                                            <option value="male" <?php echo (($form_data['gender'] ?? '') === 'male') ? 'selected' : ''; ?>>Male</option>
-                                            <option value="female" <?php echo (($form_data['gender'] ?? '') === 'female') ? 'selected' : ''; ?>>Female</option>
-                                            <option value="other" <?php echo (($form_data['gender'] ?? '') === 'other') ? 'selected' : ''; ?>>Other</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <!-- Emergency Contact -->
-                                <h5 class="text-army-green mb-3 mt-4"><i class="fas fa-phone me-2"></i>Emergency Contact</h5>
-                                
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="emergency_contact_name" class="form-label">Emergency Contact Name</label>
-                                        <input type="text" class="form-control" id="emergency_contact_name" name="emergency_contact_name" 
-                                               value="<?php echo htmlspecialchars($form_data['emergency_contact_name'] ?? ''); ?>">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="emergency_contact_phone" class="form-label">Emergency Contact Phone</label>
-                                        <input type="tel" class="form-control" id="emergency_contact_phone" name="emergency_contact_phone" 
-                                               value="<?php echo htmlspecialchars($form_data['emergency_contact_phone'] ?? ''); ?>">
-                                    </div>
-                                </div>
-                                
                                 <!-- Password -->
                                 <h5 class="text-army-green mb-3 mt-4"><i class="fas fa-lock me-2"></i>Account Security</h5>
                                 
@@ -454,20 +436,7 @@ include 'includes/header.php';
                 this.setCustomValidity('');
             }
         });
-        
-        // Age validation
-        document.getElementById('date_of_birth').addEventListener('change', function() {
-            const birthDate = new Date(this.value);
-            const today = new Date();
-            const age = today.getFullYear() - birthDate.getFullYear();
-            
-            if (age < 5) {
-                this.setCustomValidity('You must be at least 5 years old to register');
-            } else {
-                this.setCustomValidity('');
-            }
-        });
-</script>
+    </script>
 
 <?php
 // Include footer

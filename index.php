@@ -19,33 +19,99 @@ $registration_open = isRegistrationOpen();
 $early_bird_active = isEarlyBirdActive();
 $marathon_status = getMarathonStatus();
 
-// Get categories for display
+// Initialize database connection
+$db = null;
 try {
     $db = getDB();
-    $stmt = $db->query("
-        SELECT id, name, distance, description, price, max_participants 
-        FROM categories 
-        WHERE is_active = 1 
-        ORDER BY FIELD(name, 'Full Marathon', 'Half Marathon', 'Power Challenge', 'Family Fun Run', 'VIP Run', 'Kid Run')
-    ");
-    $categories = $stmt->fetchAll();
 } catch (Exception $e) {
-    $categories = [];
-    error_log("Error fetching categories: " . $e->getMessage());
+    error_log("Database connection error: " . $e->getMessage());
+}
+
+// Get categories for display
+$categories = [];
+if ($db) {
+    try {
+        $stmt = $db->query("
+            SELECT id, name, distance, description, price, max_participants 
+            FROM categories 
+            WHERE is_active = 1 
+            ORDER BY FIELD(name, 'Full Marathon', 'Half Marathon', 'Power Challenge', 'Family Fun Run', 'VIP Run', 'Kid Run')
+        ");
+        $categories = $stmt->fetchAll();
+    } catch (Exception $e) {
+        error_log("Error fetching categories: " . $e->getMessage());
+    }
+}
+
+// Fallback categories if database is empty or unavailable
+if (empty($categories)) {
+    $categories = [
+        [
+            'id' => 1,
+            'name' => 'Full Marathon',
+            'distance' => '42KM',
+            'description' => 'The ultimate endurance challenge for serious runners',
+            'price' => 200,
+            'max_participants' => 500
+        ],
+        [
+            'id' => 2,
+            'name' => 'Half Marathon',
+            'distance' => '21KM',
+            'description' => 'Perfect balance of challenge and achievability',
+            'price' => 150,
+            'max_participants' => 800
+        ],
+        [
+            'id' => 3,
+            'name' => 'Power Challenge',
+            'distance' => '10KM',
+            'description' => 'High-intensity race for fitness enthusiasts',
+            'price' => 100,
+            'max_participants' => 1000
+        ],
+        [
+            'id' => 4,
+            'name' => 'Family Fun Run',
+            'distance' => '5KM',
+            'description' => 'Perfect for families and beginners',
+            'price' => 75,
+            'max_participants' => 1200
+        ],
+        [
+            'id' => 5,
+            'name' => 'VIP Run',
+            'distance' => '10KM',
+            'description' => 'Premium experience with exclusive amenities',
+            'price' => 300,
+            'max_participants' => 100
+        ],
+        [
+            'id' => 6,
+            'name' => 'Kid Run',
+            'distance' => '1KM',
+            'description' => 'Fun and safe race for children under 12',
+            'price' => 25,
+            'max_participants' => 300
+        ]
+    ];
 }
 
 // Get recent announcements
-try {
-    $stmt = $db->query("
-        SELECT title, content, type, created_at 
-        FROM announcements 
-        WHERE is_active = 1 AND target_audience IN ('all', 'unregistered') 
-        ORDER BY created_at DESC 
-        LIMIT 3
-    ");
-    $announcements = $stmt->fetchAll();
-} catch (Exception $e) {
-    $announcements = [];
+$announcements = [];
+if ($db) {
+    try {
+        $stmt = $db->query("
+            SELECT title, content, type, created_at 
+            FROM announcements 
+            WHERE is_active = 1 AND target_audience IN ('all', 'unregistered') 
+            ORDER BY created_at DESC 
+            LIMIT 3
+        ");
+        $announcements = $stmt->fetchAll();
+    } catch (Exception $e) {
+        error_log("Error fetching announcements: " . $e->getMessage());
+    }
 }
 
 // Current registration count
@@ -427,20 +493,22 @@ include 'includes/header.php';
     <?php
     $flash_messages = getAllFlashMessages();
     foreach ($flash_messages as $type => $message):
-        $alert_class = match($type) {
-            'success' => 'alert-success',
-            'error' => 'alert-danger',
-            'warning' => 'alert-warning',
-            'info' => 'alert-info',
-            default => 'alert-info'
-        };
-        $icon = match($type) {
-            'success' => 'fas fa-check-circle',
-            'error' => 'fas fa-exclamation-triangle',
-            'warning' => 'fas fa-exclamation-circle',
-            'info' => 'fas fa-info-circle',
-            default => 'fas fa-info-circle'
-        };
+        switch($type) {
+            case 'success': $alert_class = 'alert-success'; break;
+            case 'error': $alert_class = 'alert-danger'; break;
+            case 'warning': $alert_class = 'alert-warning'; break;
+            case 'info': $alert_class = 'alert-info'; break;
+            default: $alert_class = 'alert-info'; break;
+        }
+        
+        switch($type) {
+            case 'success': $icon = 'fas fa-check-circle'; break;
+            case 'error': $icon = 'fas fa-exclamation-triangle'; break;
+            case 'warning': $icon = 'fas fa-exclamation-circle'; break;
+            case 'info': $icon = 'fas fa-info-circle'; break;
+            default: $icon = 'fas fa-info-circle'; break;
+        }
+    ?>
     ?>
         <div class="alert <?php echo $alert_class; ?> alert-dismissible fade show m-0" style="position: fixed; top: 76px; left: 0; right: 0; z-index: 1050; border-radius: 0;">
             <div class="container">
@@ -721,16 +789,30 @@ include 'includes/header.php';
             <div class="section-header">
                 <h2 class="display-5 fw-bold">Choose Your Challenge</h2>
                 <p class="lead">Six exciting race categories designed for every fitness level and age group</p>
+                <?php if (!$db): ?>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Displaying demo categories. Database connection required for live registration.
+                    </div>
+                <?php endif; ?>
             </div>
             
             <div class="row g-4">
-                <?php foreach ($categories as $category): ?>
-                <div class="col-lg-4 col-md-6">
+                <?php if (empty($categories)): ?>
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Categories are currently being loaded. Please check back soon!
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <?php foreach ($categories as $category): ?>
+                    <div class="col-lg-4 col-md-6">
                     <div class="category-card">
                         <div class="category-header">
                             <h5 class="fw-bold mb-2"><?php echo htmlspecialchars($category['name']); ?></h5>
                             <p class="mb-0 opacity-75"><?php echo htmlspecialchars($category['distance']); ?></p>
-                            <div class="category-price"><?php echo formatCurrency($category['price'] ?? 0); ?></div>
+                            <div class="category-price"><?php echo formatCurrency($category['price']); ?></div>
                         </div>
                         <div class="p-4">
                             <p class="text-muted mb-4"><?php echo htmlspecialchars($category['description']); ?></p>
@@ -738,14 +820,18 @@ include 'includes/header.php';
                             <?php if ($category['max_participants'] > 0): ?>
                                 <?php
                                 // Get current registrations for this category
-                                try {
-                                    $stmt = $db->prepare("SELECT COUNT(*) FROM registrations WHERE category_id = ? AND payment_status != 'cancelled'");
-                                    $stmt->execute([$category['id']]);
-                                    $current_count = $stmt->fetchColumn();
-                                    $percentage = ($current_count / $category['max_participants']) * 100;
-                                } catch (Exception $e) {
-                                    $current_count = 0;
-                                    $percentage = 0;
+                                $current_count = 0;
+                                $percentage = 0;
+                                
+                                if ($db) {
+                                    try {
+                                        $stmt = $db->prepare("SELECT COUNT(*) FROM registrations WHERE category_id = ? AND payment_status != 'cancelled'");
+                                        $stmt->execute([$category['id']]);
+                                        $current_count = $stmt->fetchColumn();
+                                        $percentage = ($current_count / $category['max_participants']) * 100;
+                                    } catch (Exception $e) {
+                                        error_log("Error fetching category registrations: " . $e->getMessage());
+                                    }
                                 }
                                 ?>
                                 <div class="mb-3">
@@ -781,6 +867,7 @@ include 'includes/header.php';
                     </div>
                 </div>
                 <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
     </section>
@@ -801,12 +888,12 @@ include 'includes/header.php';
                         <div class="card-body">
                             <div class="d-flex align-items-center mb-3">
                                 <?php
-                                $icon = match($announcement['type']) {
-                                    'urgent' => 'fas fa-exclamation-triangle text-danger',
-                                    'update' => 'fas fa-info-circle text-primary',
-                                    'weather' => 'fas fa-cloud text-info',
-                                    default => 'fas fa-bullhorn text-success'
-                                };
+                                switch($announcement['type']) {
+                                    case 'urgent': $icon = 'fas fa-exclamation-triangle text-danger'; break;
+                                    case 'update': $icon = 'fas fa-info-circle text-primary'; break;
+                                    case 'weather': $icon = 'fas fa-cloud text-info'; break;
+                                    default: $icon = 'fas fa-bullhorn text-success'; break;
+                                }
                                 ?>
                                 <i class="<?php echo $icon; ?> me-2"></i>
                                 <small class="text-muted"><?php echo formatDateTime($announcement['created_at']); ?></small>

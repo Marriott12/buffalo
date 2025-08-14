@@ -652,4 +652,52 @@ video {
     color: var(--gray-800);
 }
 
+/* Category Cards */
+.category-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    height: 100%;
+}
+
+.category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    border-color: var(--army-green);
+}
+
+.category-header {
+    background: linear-gradient(135deg, var(--army-green), var(--army-green-dark));
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.category-price {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    margin-top: 0.5rem;
+}
+
+.category-card .btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.category-card .progress {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.category-card .progress-bar {
+    transition: width 0.6s ease;
+}
+
 /* End of Buffalo Marathon 2025 Stylesheet */

@@ -160,6 +160,14 @@ include 'includes/header.php';
             transform: translateY(-2px);
         }
         
+        .bg-army-green {
+            background-color: var(--army-green) !important;
+        }
+        
+        .text-army-green {
+            color: var(--army-green) !important;
+        }
+        
         .comparison-table {
             background: white;
             border-radius: 15px;
@@ -222,7 +230,7 @@ include 'includes/header.php';
                     <?php if (isLoggedIn()): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                <i class="fas fa-user me-1"></i><?php echo htmlspecialchars($_SESSION['user_email']); ?>
+                                <i class="fas fa-user me-1"></i><?php echo htmlspecialchars($_SESSION['user_email'] ?? $_SESSION['email'] ?? 'User'); ?>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/dashboard.php">Dashboard</a></li>
@@ -297,13 +305,13 @@ include 'includes/header.php';
                     <div class="col-lg-4 col-md-6">
                         <div class="category-card">
                             <div class="category-header">
-                                <h4 class="fw-bold mb-2"><?php echo htmlspecialchars($category['name']); ?></h4>
-                                <p class="mb-0 fs-5 opacity-75"><?php echo htmlspecialchars($category['distance']); ?></p>
+                                <h4 class="fw-bold mb-2"><?php echo htmlspecialchars($category['name'] ?? ''); ?></h4>
+                                <p class="mb-0 fs-5 opacity-75"><?php echo htmlspecialchars($category['distance'] ?? ''); ?></p>
                                 <div class="category-price"><?php echo formatCurrency($category['price'] ?? 0); ?></div>
                             </div>
                             
                             <div class="category-body">
-                                <p class="text-muted mb-4"><?php echo htmlspecialchars($category['description']); ?></p>
+                                <p class="text-muted mb-4"><?php echo htmlspecialchars($category['description'] ?? ''); ?></p>
                                 
                                 <!-- Features -->
                                 <ul class="feature-list mb-4">
@@ -322,7 +330,7 @@ include 'includes/header.php';
                                 <div class="mb-3">
                                     <small class="text-muted">
                                         <i class="fas fa-users me-1"></i>
-                                        Age Requirement: <?php echo $category['min_age']; ?>-<?php echo $category['max_age']; ?> years
+                                        Age Requirement: <?php echo $category['min_age'] ?? 5; ?>-<?php echo $category['max_age'] ?? 100; ?> years
                                     </small>
                                 </div>
                                 
@@ -379,8 +387,75 @@ include 'includes/header.php';
     <section class="py-5 bg-light">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-6 fw-bold text-army-green">Category Comparison</h2>
-                <p class="lead">Compare all race categories at a glance</p>
+                <h2 class="display-6 fw-bold text-army-green">Category Comparison & Statistics</h2>
+                <p class="lead">Compare all race categories and see real-time registration data</p>
+            </div>
+            
+            <!-- Dynamic Statistics Cards -->
+            <div class="row g-3 mb-5">
+                <?php
+                $total_registrations = 0;
+                $total_capacity = 0;
+                $full_categories = 0;
+                $most_popular_category = '';
+                $most_popular_count = 0;
+                
+                foreach ($categories as $category) {
+                    $total_registrations += $category['registration_count'];
+                    if ($category['max_participants'] > 0) {
+                        $total_capacity += $category['max_participants'];
+                        if ($category['registration_count'] >= $category['max_participants']) {
+                            $full_categories++;
+                        }
+                    }
+                    if ($category['registration_count'] > $most_popular_count) {
+                        $most_popular_count = $category['registration_count'];
+                        $most_popular_category = $category['name'];
+                    }
+                }
+                
+                $avg_fill_rate = $total_capacity > 0 ? round(($total_registrations / $total_capacity) * 100, 1) : 0;
+                ?>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-3x text-army-green mb-3"></i>
+                            <h3 class="fw-bold text-army-green"><?php echo number_format($total_registrations); ?></h3>
+                            <p class="mb-0 text-muted">Total Registrations</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
+                            <h3 class="fw-bold text-warning"><?php echo htmlspecialchars($most_popular_category ?? 'N/A'); ?></h3>
+                            <p class="mb-0 text-muted">Most Popular Category<br><small>(<?php echo $most_popular_count; ?> registrations)</small></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-chart-pie fa-3x text-success mb-3"></i>
+                            <h3 class="fw-bold text-success"><?php echo $avg_fill_rate; ?>%</h3>
+                            <p class="mb-0 text-muted">Average Fill Rate</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                            <h3 class="fw-bold text-danger"><?php echo $full_categories; ?></h3>
+                            <p class="mb-0 text-muted">Categories Full</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="comparison-table table-responsive">
@@ -393,6 +468,7 @@ include 'includes/header.php';
                             <th>Age Requirement</th>
                             <th>Max Participants</th>
                             <th>Registered</th>
+                            <th>Fill Rate</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -400,16 +476,29 @@ include 'includes/header.php';
                         <?php foreach ($categories as $category): ?>
                             <tr>
                                 <td>
-                                    <strong><?php echo htmlspecialchars($category['name']); ?></strong>
+                                    <strong><?php echo htmlspecialchars($category['name'] ?? ''); ?></strong>
                                 </td>
-                                <td><?php echo htmlspecialchars($category['distance']); ?></td>
+                                <td><?php echo htmlspecialchars($category['distance'] ?? ''); ?></td>
                                 <td><strong><?php echo formatCurrency($category['price'] ?? 0); ?></strong></td>
-                                <td><?php echo $category['min_age']; ?>-<?php echo $category['max_age']; ?> years</td>
+                                <td><?php echo ($category['min_age'] ?? 5); ?>-<?php echo ($category['max_age'] ?? 100); ?> years</td>
                                 <td>
-                                    <?php echo $category['max_participants'] > 0 ? $category['max_participants'] : 'Unlimited'; ?>
+                                    <?php echo $category['max_participants'] > 0 ? number_format($category['max_participants']) : 'Unlimited'; ?>
                                 </td>
                                 <td>
-                                    <span class="badge bg-army-green"><?php echo $category['registration_count']; ?></span>
+                                    <span class="badge bg-army-green"><?php echo number_format($category['registration_count']); ?></span>
+                                </td>
+                                <td>
+                                    <?php if ($category['max_participants'] > 0): ?>
+                                        <?php $fill_rate = round(($category['registration_count'] / $category['max_participants']) * 100, 1); ?>
+                                        <div class="d-flex align-items-center">
+                                            <div class="progress me-2" style="width: 60px; height: 8px;">
+                                                <div class="progress-bar bg-army-green" style="width: <?php echo min($fill_rate, 100); ?>%"></div>
+                                            </div>
+                                            <small><?php echo $fill_rate; ?>%</small>
+                                        </div>
+                                    <?php else: ?>
+                                        <span class="text-muted">N/A</span>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
                                     <?php if (!$registration_open): ?>

@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($change_password) {
             if (empty($form_data['current_password'])) {
                 $errors[] = 'Current password is required to change password.';
-            } elseif (!verifyPassword($form_data['current_password'], $user['password'])) {
+            } elseif (!password_verify($form_data['current_password'], $user['password'])) {
                 $errors[] = 'Current password is incorrect.';
             }
             
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 if ($change_password) {
                     // Update with password change
-                    $hashed_password = hashPassword($form_data['new_password']);
+                    $hashed_password = password_hash($form_data['new_password'], PASSWORD_DEFAULT);
                     $stmt = $db->prepare("
                         UPDATE users SET 
                             first_name = ?, last_name = ?, phone = ?, date_of_birth = ?, 
@@ -151,18 +151,11 @@ try {
 } catch (Exception $e) {
     error_log("Profile registration fetch error: " . $e->getMessage());
 }
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - Buffalo Marathon 2025</title>
-    <meta name="description" content="Manage your Buffalo Marathon 2025 profile, update personal information, and view your registration details.">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    
+
+// Page title and description for header
+$page_title = "My Profile - Buffalo Marathon 2025";
+$page_description = "Manage your Buffalo Marathon 2025 profile, update personal information, and view your registration details.";
+$additional_css = "
     <style>
         :root {
             --army-green: #4B5320;
@@ -259,12 +252,13 @@ try {
             color: #212529;
         }
     </style>
-</head>
-<body class="bg-light">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-army-green">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/">
+";
+
+include 'includes/header.php'; 
+?>
+
+<!-- Add spacing between header and profile content -->
+<div class="py-3"></div>
                 <i class="fas fa-running me-2"></i>Buffalo Marathon 2025
             </a>
             
@@ -288,7 +282,7 @@ try {
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="fas fa-user me-1"></i><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>
+                            <i class="fas fa-user me-1"></i><?php echo htmlspecialchars(($user['first_name'] ?? 'User') . ' ' . ($user['last_name'] ?? '')); ?>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item active" href="/profile.php">Profile</a></li>
@@ -312,8 +306,8 @@ try {
             <div class="profile-avatar">
                 <i class="fas fa-user"></i>
             </div>
-            <h2 class="fw-bold mb-2"><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></h2>
-            <p class="lead mb-0"><?php echo htmlspecialchars($user['email']); ?></p>
+            <h2 class="fw-bold mb-2"><?php echo htmlspecialchars(($user['first_name'] ?? 'User') . ' ' . ($user['last_name'] ?? '')); ?></h2>
+            <p class="lead mb-0"><?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
             <small class="opacity-75">
                 Member since <?php echo formatDate($user['created_at'], 'F Y'); ?>
             </small>
@@ -331,17 +325,19 @@ try {
                 </div>
               </div>';
     }
-    foreach ($flash_messages as $type => $message):
-        $alert_class = match($type) {
-            'success' => 'alert-success',
-            'error' => 'alert-danger',
-            'warning' => 'alert-warning',
-            default => 'alert-info'
-        };
+    foreach ($flash_messages as $flash):
+        $type = $flash['type'] ?? 'info';
+        $message = $flash['message'] ?? '';
+        switch($type) {
+            case 'success': $alert_class = 'alert-success'; break;
+            case 'error': $alert_class = 'alert-danger'; break;
+            case 'warning': $alert_class = 'alert-warning'; break;
+            default: $alert_class = 'alert-info'; break;
+        }
     ?>
         <div class="alert <?php echo $alert_class; ?> alert-dismissible fade show m-0">
             <div class="container">
-                <?php echo htmlspecialchars($message); ?>
+                <?php echo htmlspecialchars($message ?? ''); ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         </div>
@@ -362,7 +358,7 @@ try {
                                     <h6><i class="fas fa-exclamation-triangle me-2"></i>Please correct the following errors:</h6>
                                     <ul class="mb-0">
                                         <?php foreach ($errors as $error): ?>
-                                            <li><?php echo htmlspecialchars($error); ?></li>
+                                            <li><?php echo htmlspecialchars($error ?? ''); ?></li>
                                         <?php endforeach; ?>
                                     </ul>
                                 </div>
@@ -378,12 +374,12 @@ try {
                                     <div class="col-md-6">
                                         <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" id="first_name" name="first_name" 
-                                               value="<?php echo htmlspecialchars($user['first_name']); ?>" required>
+                                               value="<?php echo htmlspecialchars($user['first_name'] ?? ''); ?>" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" id="last_name" name="last_name" 
-                                               value="<?php echo htmlspecialchars($user['last_name']); ?>" required>
+                                               value="<?php echo htmlspecialchars($user['last_name'] ?? ''); ?>" required>
                                     </div>
                                 </div>
                                 
@@ -391,13 +387,13 @@ try {
                                     <div class="col-md-6">
                                         <label for="email" class="form-label">Email Address</label>
                                         <input type="email" class="form-control" id="email" 
-                                               value="<?php echo htmlspecialchars($user['email']); ?>" disabled>
+                                               value="<?php echo htmlspecialchars($user['email'] ?? ''); ?>" disabled>
                                         <div class="form-text">Email cannot be changed. Contact support if needed.</div>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
                                         <input type="tel" class="form-control" id="phone" name="phone" 
-                                               value="<?php echo htmlspecialchars($user['phone']); ?>" required>
+                                               value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" required>
                                     </div>
                                 </div>
                                 
@@ -405,33 +401,34 @@ try {
                                     <div class="col-md-6">
                                         <label for="date_of_birth" class="form-label">Date of Birth</label>
                                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" 
-                                               value="<?php echo htmlspecialchars($user['date_of_birth']); ?>" 
+                                               value="<?php echo htmlspecialchars($user['date_of_birth'] ?? ''); ?>" 
                                                max="<?php echo date('Y-m-d'); ?>">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="gender" class="form-label">Gender</label>
                                         <select class="form-select" id="gender" name="gender">
                                             <option value="">Select Gender</option>
-                                            <option value="male" <?php echo ($user['gender'] === 'male') ? 'selected' : ''; ?>>Male</option>
-                                            <option value="female" <?php echo ($user['gender'] === 'female') ? 'selected' : ''; ?>>Female</option>
-                                            <option value="other" <?php echo ($user['gender'] === 'other') ? 'selected' : ''; ?>>Other</option>
+                                            <option value="male" <?php echo (($user['gender'] ?? '') === 'male') ? 'selected' : ''; ?>>Male</option>
+                                            <option value="female" <?php echo (($user['gender'] ?? '') === 'female') ? 'selected' : ''; ?>>Female</option>
+                                                                                        <option value="other" <?php echo (($user['gender'] ?? '') === 'other') ? 'selected' : ''; ?>>Other</option>
                                         </select>
                                     </div>
                                 </div>
                                 
                                 <!-- Emergency Contact -->
-                                <h5 class="text-army-green mb-3 mt-4">Emergency Contact</h5>
+                                <h5 class="text-army-green mb-3 mt-4"><i class="fas fa-phone me-2"></i>Emergency Contact</h5>
                                 
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="emergency_contact_name" class="form-label">Emergency Contact Name</label>
                                         <input type="text" class="form-control" id="emergency_contact_name" name="emergency_contact_name" 
-                                               value="<?php echo htmlspecialchars($user['emergency_contact_name']); ?>">
+                                               value="<?php echo htmlspecialchars($user['emergency_contact_name'] ?? ''); ?>">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="emergency_contact_phone" class="form-label">Emergency Contact Phone</label>
                                         <input type="tel" class="form-control" id="emergency_contact_phone" name="emergency_contact_phone" 
-                                               value="<?php echo htmlspecialchars($user['emergency_contact_phone']); ?>">
+                                               value="<?php echo htmlspecialchars($user['emergency_contact_phone'] ?? ''); ?>">
+                                        </select>
                                     </div>
                                 </div>
                                 
@@ -466,6 +463,64 @@ try {
                 
                 <!-- Sidebar -->
                 <div class="col-lg-4">
+                    <!-- Bank Account Details -->
+                    <div class="profile-section">
+                        <h5 class="section-header">
+                            <i class="fas fa-university me-2"></i>Payment Information
+                        </h5>
+                        
+                        <div class="bank-details-card">
+                            <div class="bank-header text-center mb-3">
+                                <i class="fas fa-landmark fa-2x text-army-green mb-2"></i>
+                                <h6 class="text-army-green mb-0">Official Bank Account</h6>
+                                <small class="text-muted">For marathon registration payments</small>
+                            </div>
+                            
+                            <div class="bank-info">
+                                <div class="bank-detail-row">
+                                    <span class="bank-label">Bank Name:</span>
+                                    <span class="bank-value"><?php echo BANK_NAME; ?></span>
+                                </div>
+                                
+                                <div class="bank-detail-row">
+                                    <span class="bank-label">Account Name:</span>
+                                    <span class="bank-value"><?php echo BANK_ACCOUNT_NAME; ?></span>
+                                </div>
+                                
+                                <div class="bank-detail-row">
+                                    <span class="bank-label">Account Number:</span>
+                                    <span class="bank-value font-weight-bold"><?php echo BANK_ACCOUNT_NUMBER; ?></span>
+                                </div>
+                                
+                                <div class="bank-detail-row">
+                                    <span class="bank-label">Branch:</span>
+                                    <span class="bank-value"><?php echo BANK_BRANCH; ?></span>
+                                </div>
+                                
+                                <div class="bank-detail-row">
+                                    <span class="bank-label">SWIFT Code:</span>
+                                    <span class="bank-value"><?php echo BANK_SWIFT_CODE; ?></span>
+                                </div>
+                                
+                                <div class="bank-detail-row">
+                                    <span class="bank-label">Currency:</span>
+                                    <span class="bank-value"><?php echo BANK_CURRENCY; ?></span>
+                                </div>
+                            </div>
+                            
+                            <div class="bank-actions mt-3">
+                                <button class="btn btn-sm btn-outline-army-green w-100" onclick="copyBankDetails()">
+                                    <i class="fas fa-copy me-1"></i>Copy Account Number
+                                </button>
+                            </div>
+                            
+                            <div class="alert alert-info mt-3 mb-0" style="font-size: 0.85rem;">
+                                <i class="fas fa-info-circle me-1"></i>
+                                <strong>Note:</strong> Use this account for all marathon registration payments. Include your registration number as reference.
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- Registration Status -->
                     <?php if ($registration): ?>
                         <div class="profile-section">
@@ -479,11 +534,11 @@ try {
                             
                             <div class="info-card">
                                 <h6 class="text-army-green mb-2">Registration Details</h6>
-                                <p class="mb-1"><strong>Category:</strong> <?php echo htmlspecialchars($registration['category_name']); ?></p>
-                                <p class="mb-1"><strong>Distance:</strong> <?php echo htmlspecialchars($registration['distance']); ?></p>
-                                <p class="mb-1"><strong>Registration #:</strong> <?php echo htmlspecialchars($registration['registration_number']); ?></p>
-                                <p class="mb-1"><strong>T-Shirt Size:</strong> <?php echo htmlspecialchars($registration['t_shirt_size']); ?></p>
-                                <p class="mb-0"><strong>Fee:</strong> <?php echo formatCurrency($registration['payment_amount']); ?></p>
+                                <p class="mb-1"><strong>Category:</strong> <?php echo htmlspecialchars($registration['category_name'] ?? ''); ?></p>
+                                <p class="mb-1"><strong>Distance:</strong> <?php echo htmlspecialchars($registration['distance'] ?? ''); ?></p>
+                                <p class="mb-1"><strong>Registration #:</strong> <?php echo htmlspecialchars($registration['registration_number'] ?? ''); ?></p>
+                                <p class="mb-1"><strong>T-Shirt Size:</strong> <?php echo htmlspecialchars($registration['t_shirt_size'] ?? ''); ?></p>
+                                <p class="mb-0"><strong>Fee:</strong> <?php echo formatCurrency($registration['payment_amount'] ?? 0); ?></p>
                             </div>
                             
                             <div class="mt-3 text-center">
@@ -529,7 +584,7 @@ try {
                         <div class="mb-3">
                             <small class="text-muted">Account Status</small><br>
                             <span class="badge bg-success">Active</span>
-                            <?php if ($user['email_verified']): ?>
+                            <?php if ($user['email_verified'] ?? false): ?>
                                 <span class="badge bg-success">Verified</span>
                             <?php else: ?>
                                 <span class="badge bg-warning">Unverified</span>
@@ -604,5 +659,148 @@ try {
             });
         }, 5000);
     </script>
-</body>
-</html>
+
+    <!-- Bank Details Styling and Functionality -->
+    <style>
+        .bank-details-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .bank-header {
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .bank-info {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .bank-detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f3f4;
+        }
+        
+        .bank-detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .bank-label {
+            font-weight: 500;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .bank-value {
+            font-weight: 600;
+            color: #2d3436;
+            text-align: right;
+            word-break: break-all;
+        }
+        
+        .bank-actions .btn {
+            transition: all 0.3s ease;
+        }
+        
+        .bank-actions .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .bank-detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .bank-value {
+                text-align: left;
+                margin-top: 4px;
+            }
+        }
+    </style>
+
+    <script>
+        function copyBankDetails() {
+            const accountNumber = '<?php echo BANK_ACCOUNT_NUMBER; ?>';
+            
+            // Modern clipboard API
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(accountNumber).then(function() {
+                    showCopySuccess();
+                }).catch(function(err) {
+                    fallbackCopyTextToClipboard(accountNumber);
+                });
+            } else {
+                // Fallback method
+                fallbackCopyTextToClipboard(accountNumber);
+            }
+        }
+        
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopySuccess();
+                } else {
+                    showCopyError();
+                }
+            } catch (err) {
+                showCopyError();
+            }
+            
+            document.body.removeChild(textArea);
+        }
+        
+        function showCopySuccess() {
+            const btn = document.querySelector('.bank-actions .btn');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+            btn.classList.remove('btn-outline-army-green');
+            btn.classList.add('btn-success');
+            
+            setTimeout(function() {
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-outline-army-green');
+            }, 2000);
+        }
+        
+        function showCopyError() {
+            const btn = document.querySelector('.bank-actions .btn');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-times me-1"></i>Failed to copy';
+            btn.classList.remove('btn-outline-army-green');
+            btn.classList.add('btn-danger');
+            
+            setTimeout(function() {
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-danger');
+                btn.classList.add('btn-outline-army-green');
+            }, 2000);
+        }
+    </script>
+
+<?php include 'includes/footer.php'; ?>

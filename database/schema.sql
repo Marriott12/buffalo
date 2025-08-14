@@ -83,7 +83,7 @@ CREATE TABLE registrations (
     
     -- Race Information
     estimated_finish_time VARCHAR(20),
-    tshirt_size ENUM('XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL') NOT NULL,
+    t_shirt_size ENUM('XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL') NOT NULL,
     
     -- Medical Information
     medical_conditions TEXT,
@@ -91,7 +91,7 @@ CREATE TABLE registrations (
     dietary_requirements TEXT,
     
     -- Payment Information
-    amount_paid DECIMAL(10,2) DEFAULT 0.00,
+    payment_amount DECIMAL(10,2) DEFAULT 0.00,
     payment_method VARCHAR(50),
     payment_reference VARCHAR(100),
     payment_date DATETIME,
@@ -393,7 +393,7 @@ SELECT
     c.distance,
     r.status as registration_status,
     r.payment_status,
-    r.amount_paid,
+    r.payment_amount,
     r.bib_number,
     r.created_at as registration_date
 FROM users u

@@ -68,18 +68,11 @@ try {
 $days_until_marathon = getDaysUntilMarathon();
 $days_until_deadline = getDaysUntilDeadline();
 $registration_open = isRegistrationOpen();
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Buffalo Marathon 2025</title>
-    <meta name="description" content="Your Buffalo Marathon 2025 dashboard - manage your registration, view updates, and track your progress.">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    
+
+// Page title and description for header
+$page_title = "Dashboard - Buffalo Marathon 2025";
+$page_description = "Your Buffalo Marathon 2025 dashboard - manage your registration, view updates, and track your progress.";
+$additional_css = "
     <style>
         :root {
             --army-green: #4B5320;
@@ -198,77 +191,15 @@ $registration_open = isRegistrationOpen();
             text-decoration: none;
         }
     </style>
-</head>
-<body class="bg-light">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-army-green">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/">
-                <i class="fas fa-running me-2"></i>Buffalo Marathon 2025
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/dashboard.php">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/categories.php">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/schedule.php">Schedule</a>
-                    </li>
-                </ul>
-                
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="fas fa-user me-1"></i><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/profile.php">Profile</a></li>
-                            <?php if (isAdmin()): ?>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/admin/">Admin Panel</a></li>
-                            <?php endif; ?>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/logout.php">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+";
 
-    <!-- Flash Messages -->
-    <?php
-    $flash_messages = getAllFlashMessages();
-    foreach ($flash_messages as $flash):
-        $type = $flash['type'];
-        $message = $flash['message'];
-        $alert_class = match($type) {
-            'success' => 'alert-success',
-            'error' => 'alert-danger',
-            'warning' => 'alert-warning',
-            default => 'alert-info'
-        };
-    ?>
-        <div class="alert <?php echo $alert_class; ?> alert-dismissible fade show m-0">
-            <div class="container">
-                <?php echo htmlspecialchars($message); ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        </div>
-    <?php endforeach; ?>
+include 'includes/header.php'; 
+?>
 
-    <!-- Dashboard Header -->
+<!-- Add spacing between header and dashboard content -->
+<div class="py-3"></div>
+
+<!-- Dashboard Header -->
     <section class="dashboard-header">
         <div class="container">
             <div class="row align-items-center">
@@ -531,5 +462,5 @@ $registration_open = isRegistrationOpen();
             });
         }, 5000);
     </script>
-</body>
-</html>
+
+<?php include 'includes/footer.php'; ?>

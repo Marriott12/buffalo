@@ -6,6 +6,10 @@
 
 define('BUFFALO_SECURE_ACCESS', true);
 require_once 'includes/functions.php';
+require_once 'includes/cache.php';
+
+// Initialize cache manager
+CacheManager::init();
 
 // Require login
 requireLogin();
@@ -50,7 +54,8 @@ $form_data = [];
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check rate limiting for registration attempts
-    if (!SecurityEnhancer::checkAdvancedRateLimit('registration', 3, 300)) {
+    $client_ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    if (!checkRateLimit('registration', $client_ip, 3)) {
         $errors[] = 'Too many registration attempts. Please try again later.';
     }
     
@@ -129,7 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $db->beginTransaction();
                 
-                $registration_number = generateRegistrationNumber();
+                // Generate registration number
+                $registration_number = 'BM2025-' . str_pad(rand(10000, 99999), 5, '0', STR_PAD_LEFT);
                 $payment_amount = $selected_category['price'];
                 
                 // Update emergency contact in user profile if provided
@@ -206,7 +212,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p>Please keep your registration number safe. You'll need it for race pack collection.</p>
                 <p>See you at the marathon!</p>
                 ";
-                queueEmail($user['email'], $email_subject, $email_body);
+                
+                // TODO: Implement email functionality
+                // queueEmail($user['email'], $email_subject, $email_body);
+                error_log("Registration email would be sent to: " . $user['email']);
                 
                 setFlashMessage('success', "Registration successful! Your registration number is: {$registration_number}");
                 redirectTo('/dashboard.php');

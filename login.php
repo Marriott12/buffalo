@@ -18,7 +18,8 @@ $email = '';
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check rate limiting first
-    if (!SecurityEnhancer::checkAdvancedRateLimit('login', 5, 300)) {
+    $client_ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    if (!checkRateLimit('login', $client_ip, 5)) {
         $errors[] = 'Too many login attempts. Please try again later.';
     }
     
@@ -54,11 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute([
                     $email,
                     $ip_address,
-                    $user && verifyPassword($password, $user['password']) ? 1 : 0,
+                    $user && password_verify($password, $user['password']) ? 1 : 0,
                     $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown'
                 ]);
                 
-                if ($user && verifyPassword($password, $user['password'])) {
+                if ($user && password_verify($password, $user['password'])) {
                     // Login successful
                     loginUser($user['id'], $user['email'], $user['role']);
                     

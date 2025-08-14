@@ -57,6 +57,11 @@ if (!function_exists('getFlash')) {
     <!-- Custom CSS -->
     <link href="<?php echo str_contains($_SERVER['REQUEST_URI'], '/admin/') ? '../' : ''; ?>assets/css/style.css?v=1.0.0" rel="stylesheet">
     
+    <!-- Additional CSS for specific pages -->
+    <?php if (isset($additional_css) && $additional_css): ?>
+        <?php echo $additional_css; ?>
+    <?php endif; ?>
+    
     <!-- CSRF Token -->
     <meta name="csrf-token" content="<?php echo function_exists('generateCSRFToken') ? generateCSRFToken() : ''; ?>">
 </head>
@@ -145,11 +150,11 @@ if (!function_exists('getFlash')) {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user-circle me-1"></i>
-                                <span><?php echo htmlspecialchars($_SESSION['first_name']); ?></span>
+                                <span><?php echo htmlspecialchars($_SESSION['user_first_name'] ?? $_SESSION['first_name'] ?? 'User'); ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><h6 class="dropdown-header">
-                                    <i class="fas fa-user me-2"></i><?php echo htmlspecialchars($_SESSION['first_name'] . ' ' . $_SESSION['last_name']); ?>
+                                    <i class="fas fa-user me-2"></i><?php echo htmlspecialchars(($_SESSION['user_first_name'] ?? $_SESSION['first_name'] ?? 'User') . ' ' . ($_SESSION['user_last_name'] ?? $_SESSION['last_name'] ?? '')); ?>
                                 </h6></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="profile.php">
@@ -254,7 +259,7 @@ if (!function_exists('getFlash')) {
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-shield me-1"></i><?php echo htmlspecialchars($_SESSION['first_name']); ?>
+                            <i class="fas fa-user-shield me-1"></i><?php echo htmlspecialchars($_SESSION['user_first_name'] ?? $_SESSION['first_name'] ?? 'Admin'); ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="../profile.php">
@@ -273,30 +278,30 @@ if (!function_exists('getFlash')) {
     </nav>
     
     <!-- Flash Messages -->
-    <?php if (function_exists('getFlash') && ($success_msg = getFlash('success'))): ?>
+    <?php if (function_exists('getFlashByType') && ($success_msg = getFlashByType('success'))): ?>
         <div class="alert alert-success alert-dismissible fade show flash-message" role="alert">
-            <i class="fas fa-check-circle me-2"></i><?php echo $success_msg; ?>
+            <i class="fas fa-check-circle me-2"></i><?php echo htmlspecialchars($success_msg); ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
     
-    <?php if (function_exists('getFlash') && ($error_msg = getFlash('error'))): ?>
+    <?php if (function_exists('getFlashByType') && ($error_msg = getFlashByType('error'))): ?>
         <div class="alert alert-danger alert-dismissible fade show flash-message" role="alert">
-            <i class="fas fa-exclamation-triangle me-2"></i><?php echo $error_msg; ?>
+            <i class="fas fa-exclamation-triangle me-2"></i><?php echo htmlspecialchars($error_msg); ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
     
-    <?php if (function_exists('getFlash') && ($info_msg = getFlash('info'))): ?>
+    <?php if (function_exists('getFlashByType') && ($info_msg = getFlashByType('info'))): ?>
         <div class="alert alert-info alert-dismissible fade show flash-message" role="alert">
-            <i class="fas fa-info-circle me-2"></i><?php echo $info_msg; ?>
+            <i class="fas fa-info-circle me-2"></i><?php echo htmlspecialchars($info_msg); ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
     
-    <?php if (function_exists('getFlash') && ($warning_msg = getFlash('warning'))): ?>
+    <?php if (function_exists('getFlashByType') && ($warning_msg = getFlashByType('warning'))): ?>
         <div class="alert alert-warning alert-dismissible fade show flash-message" role="alert">
-            <i class="fas fa-exclamation-triangle me-2"></i><?php echo $warning_msg; ?>
+            <i class="fas fa-exclamation-triangle me-2"></i><?php echo htmlspecialchars($warning_msg); ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>

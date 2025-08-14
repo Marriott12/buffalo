@@ -182,17 +182,25 @@ function safeGetSetting($key, $default = null) {
     }
 }
 
-function loginUser($user_id, $email, $role = 'user', $first_name = '') {
+function loginUser($user_id, $email, $role = 'user', $first_name = '', $last_name = '') {
     startSecureSession();
     
     // Regenerate session ID for security
     session_regenerate_id(true);
     
-    // Set session variables
+    // Set session variables (using both naming conventions for compatibility)
     $_SESSION['user_id'] = $user_id;
     $_SESSION['user_email'] = $email;
     $_SESSION['user_role'] = $role;
     $_SESSION['user_first_name'] = $first_name;
+    $_SESSION['user_last_name'] = $last_name;
+    
+    // Also set legacy naming for compatibility
+    $_SESSION['first_name'] = $first_name;
+    $_SESSION['last_name'] = $last_name;
+    $_SESSION['email'] = $email;
+    $_SESSION['role'] = $role;
+    
     $_SESSION['login_time'] = time();
     
     // Log the successful login (fallback if logActivity doesn't exist)
@@ -304,6 +312,29 @@ function getFlash() {
     $messages = $_SESSION['flash'] ?? [];
     unset($_SESSION['flash']);
     return $messages;
+}
+
+function getFlashByType($type) {
+    startSecureSession();
+    $messages = $_SESSION['flash'] ?? [];
+    
+    // Find messages of the specified type
+    $filtered = array_filter($messages, function($msg) use ($type) {
+        return ($msg['type'] ?? '') === $type;
+    });
+    
+    if (!empty($filtered)) {
+        // Remove the found messages from session
+        $_SESSION['flash'] = array_filter($messages, function($msg) use ($type) {
+            return ($msg['type'] ?? '') !== $type;
+        });
+        
+        // Return the first message of this type as a string
+        $first = array_values($filtered)[0];
+        return $first['message'] ?? '';
+    }
+    
+    return null;
 }
 
 function getAllFlashMessages() {
@@ -1098,6 +1129,20 @@ function addNavigationSecurity($pageType = 'public') {
         default:
             // Public page, no additional restrictions
             break;
+    }
+}
+
+/**
+ * Redirect to a URL with proper header handling
+ */
+function redirectTo($url) {
+    if (!headers_sent()) {
+        header("Location: $url");
+        exit();
+    } else {
+        // Fallback if headers already sent
+        echo "<script>window.location.href = '$url';</script>";
+        exit();
     }
 }
 
